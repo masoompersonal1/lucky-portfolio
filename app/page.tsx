@@ -10,6 +10,7 @@ import connectToDatabase from "@/lib/mongodb";
 import { PortfolioContent } from "@/lib/models";
 import ClientAppWrapper from "@/components/ClientAppWrapper";
 
+export const dynamic = 'force-dynamic';
 export const revalidate = 0; // Force dynamic rendering so updates reflect instantly without rebuilding
 
 export default async function Home() {
