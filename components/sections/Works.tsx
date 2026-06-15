@@ -1,3 +1,5 @@
+'use client'
+
 import Image from 'next/image'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { useState } from 'react'
