@@ -9,15 +9,19 @@ export interface HeroProps {
     mainTitle?: string;
     signature?: string;
     signatureSubtext?: string;
-    imageUrl?: string;
+    mediaUrl?: string;
+    mediaPublicId?: string;
   }
 }
 
 export default function Hero({ data }: HeroProps) {
-  // Use exact values from reference image if no data
-  const mainTitle = data?.mainTitle || "LUCKY"
+  // Hardcoded to strictly prevent admin from changing the main hero text
+  const mainTitle = "LUCKY"
   const signature = "LS"
-  const imageUrl = data?.imageUrl
+  const topSubheadingLines = (data?.topSubheading || "AN AWARD-WINNING\nPHOTOGRAPHER WHOSE LENS\nTRANSFORMS MOMENTS INTO\nTIMELESS MASTERPIECES").split('\n')
+  const signatureSubtextLines = (data?.signatureSubtext || "SCROLL\nMORE").split('\n')
+  const mediaUrl = data?.mediaUrl || "/hero.jpeg"
+  const isVideo = mediaUrl.match(/\.(mp4|webm|ogg)$/i)
 
   return (
     <section 
@@ -26,16 +30,12 @@ export default function Hero({ data }: HeroProps) {
     >
       {/* Left Text Block */}
       <div className="absolute top-32 left-8 md:left-16 z-20 text-[10px] md:text-[11px] leading-relaxed tracking-wider uppercase text-[#a3a3a3] font-semibold flex flex-col">
-        <span>AN AWARD-WINNING</span>
-        <span>PHOTOGRAPHER WHOSE LENS</span>
-        <span>TRANSFORMS MOMENTS INTO</span>
-        <span>TIMELESS MASTERPIECES</span>
+        {topSubheadingLines.map((line, i) => <span key={i}>{line}</span>)}
       </div>
       
       {/* Right Text Block */}
       <div className="absolute top-[45%] right-8 md:right-16 z-20 text-[10px] md:text-[11px] leading-snug tracking-wider uppercase text-[#a3a3a3] font-semibold text-right">
-        <span>SCROLL</span><br/>
-        <span>MORE</span>
+        {signatureSubtextLines.map((line, i) => <span key={i}>{line}<br/></span>)}
       </div>
 
       {/* Main Portrait - FULL WIDTH */}
@@ -46,13 +46,21 @@ export default function Hero({ data }: HeroProps) {
           transition={{ duration: 1.2, ease: "easeOut" }}
           className="relative w-full h-full"
         >
-          <Image 
-            src={"/hero.jpeg"} 
-            alt="Hero Portrait" 
-            fill 
-            className="object-cover object-top grayscale brightness-50 contrast-125"
-            priority
-          />
+          {isVideo ? (
+            <video 
+              src={mediaUrl}
+              className="w-full h-full object-cover object-top grayscale brightness-50 contrast-125"
+              autoPlay muted loop playsInline
+            />
+          ) : (
+            <Image 
+              src={mediaUrl} 
+              alt="Hero Portrait" 
+              fill 
+              className="object-cover object-top grayscale brightness-50 contrast-125"
+              priority
+            />
+          )}
         </motion.div>
       </div>
 

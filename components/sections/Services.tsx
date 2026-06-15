@@ -4,36 +4,29 @@ import { useState } from 'react'
 import Image from 'next/image'
 import { ArrowRight } from 'lucide-react'
 
-const services = [
-  {
-    id: 'portraiture',
-    title: 'PORTRAITURE',
-    image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=800&grayscale=true'
-  },
-  {
-    id: 'event',
-    title: 'EVENT COVERAGE',
-    image: 'https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&q=80&w=800&grayscale=true'
-  },
-  {
-    id: 'commercial',
-    title: 'COMMERCIAL PHOTO',
-    image: 'https://images.unsplash.com/photo-1449247709967-d4461a6a6103?auto=format&fit=crop&q=80&w=800&grayscale=true'
-  },
-  {
-    id: 'wedding',
-    title: 'WEDDING PHOTO',
-    image: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=800&grayscale=true'
-  },
-  {
-    id: 'fineart',
-    title: 'FINE ART PHOTO',
-    image: 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&q=80&w=800&grayscale=true'
+export interface ServicesProps {
+  data?: {
+    description?: string;
+    list?: { title: string; mediaUrl: string }[];
   }
-]
+}
 
-export default function Services() {
+export default function Services({ data }: ServicesProps) {
   const [activeId, setActiveId] = useState<string | null>(null)
+
+  const descriptionLines = (data?.description || "Whether it's capturing the\nessence of a corporate\nevent, immortalizing a\ncouple's special day, or\ncollaborating on artistic\nprojects").split('\n')
+
+  const defaultServices = [
+    { title: 'PORTRAITURE', image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=800&grayscale=true' },
+    { title: 'EVENT COVERAGE', image: 'https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&q=80&w=800&grayscale=true' },
+    { title: 'COMMERCIAL PHOTO', image: 'https://images.unsplash.com/photo-1449247709967-d4461a6a6103?auto=format&fit=crop&q=80&w=800&grayscale=true' },
+    { title: 'WEDDING PHOTO', image: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=800&grayscale=true' },
+    { title: 'FINE ART PHOTO', image: 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&q=80&w=800&grayscale=true' }
+  ]
+
+  const services = data?.list && data.list.length > 0 
+    ? data.list.map((s, i) => ({ id: `srv_${i}`, title: s.title, image: s.mediaUrl || defaultServices[i%defaultServices.length].image }))
+    : defaultServices.map((s, i) => ({ id: `srv_${i}`, title: s.title, image: s.image }))
 
   return (
     <section id="services" className="w-full min-h-0 md:min-h-screen bg-[#c0c0c0] relative px-6 md:px-16 pt-16 md:pt-24 pb-8 md:pb-20 text-black flex flex-col justify-center">
@@ -45,12 +38,7 @@ export default function Services() {
             MY SERVICES
           </h2>
           <p className="text-[11px] md:text-sm font-bold tracking-wider leading-relaxed uppercase max-w-sm">
-            Whether it's capturing the <br className="hidden md:block" />
-            essence of a corporate <br className="hidden md:block" />
-            event, immortalizing a <br className="hidden md:block" />
-            couple's special day, or <br className="hidden md:block" />
-            collaborating on artistic <br className="hidden md:block" />
-            projects
+            {descriptionLines.map((line, i) => <span key={i}>{line} <br className="hidden md:block" /></span>)}
           </p>
         </div>
 

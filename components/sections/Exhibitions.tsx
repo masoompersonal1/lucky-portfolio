@@ -5,29 +5,47 @@ import Image from 'next/image'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { AnimatePresence, motion } from 'framer-motion'
 
-const exhibitionsData = [
-  {
-    id: 1,
-    image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=1600&grayscale=true",
-    location: "Madrid, January 2024",
-    studio: "Feel Free Photography"
-  },
-  {
-    id: 2,
-    image: "https://images.unsplash.com/photo-1518998053401-b2b9187313bd?auto=format&fit=crop&q=80&w=1600&grayscale=true",
-    location: "Paris, March 2024",
-    studio: "Lumiere Studios"
-  },
-  {
-    id: 3,
-    image: "https://images.unsplash.com/photo-1541123437800-1bb1317bc920?auto=format&fit=crop&q=80&w=1600&grayscale=true",
-    location: "Tokyo, July 2024",
-    studio: "Neon Visions"
+export interface ExhibitionsProps {
+  data?: {
+    year?: string;
+    title?: string;
+    description?: string;
+    list?: { text: string; mediaUrl: string }[];
   }
-]
+}
 
-export default function Exhibitions() {
+export default function Exhibitions({ data }: ExhibitionsProps) {
   const [activeIndex, setActiveIndex] = useState(0)
+
+  const year = data?.year || "2024"
+  const title = data?.title || "My Exhibitions"
+  const descriptionLines = (data?.description || "The artist's ability to transcend\nboundaries and connect with a\nglobal audience is a testament to\nthe universal language of squidwod\nvisual storytelling").split('\n')
+
+  const defaultExhibitionsData = [
+    { text: "MADRID, JAN 2024\nFEEL FREE PHOTOGRAPHY", image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=1600&grayscale=true" },
+    { text: "PARIS, MAR 2024\nLUMIERE STUDIOS", image: "https://images.unsplash.com/photo-1518998053401-b2b9187313bd?auto=format&fit=crop&q=80&w=1600&grayscale=true" },
+    { text: "TOKYO, JUL 2024\nNEON VISIONS", image: "https://images.unsplash.com/photo-1541123437800-1bb1317bc920?auto=format&fit=crop&q=80&w=1600&grayscale=true" }
+  ]
+
+  const exhibitionsData = data?.list && data.list.length > 0
+    ? data.list.map((item, i) => {
+        const textParts = item.text.split('\n')
+        return {
+          id: i,
+          location: textParts[0] || "",
+          studio: textParts[1] || "",
+          image: item.mediaUrl || defaultExhibitionsData[i%defaultExhibitionsData.length].image
+        }
+      })
+    : defaultExhibitionsData.map((item, i) => {
+        const textParts = item.text.split('\n')
+        return {
+          id: i,
+          location: textParts[0] || "",
+          studio: textParts[1] || "",
+          image: item.image
+        }
+      })
 
   const handleNext = () => setActiveIndex((prev) => (prev + 1) % exhibitionsData.length)
   const handlePrev = () => setActiveIndex((prev) => (prev - 1 + exhibitionsData.length) % exhibitionsData.length)
@@ -41,7 +59,7 @@ export default function Exhibitions() {
       <div className="w-full flex justify-between items-start mb-8 md:mb-12 max-w-[1200px] mx-auto">
         {/* Left Side: Year and Arrows */}
         <div className="flex flex-col gap-8 md:gap-16">
-          <h2 className="text-3xl md:text-5xl font-medium tracking-tighter">2024</h2>
+          <h2 className="text-3xl md:text-5xl font-medium tracking-tighter">{year}</h2>
           <div className="flex items-center gap-2 md:gap-4">
             <button 
               onClick={handlePrev}
@@ -68,13 +86,9 @@ export default function Exhibitions() {
 
         {/* Right Side: Title and Paragraph */}
         <div className="flex flex-col items-end text-right max-w-[200px] md:max-w-[400px]">
-          <h2 className="text-3xl md:text-4xl font-bold tracking-tighter uppercase mb-4 md:mb-6">My Exhibitions</h2>
+          <h2 className="text-3xl md:text-4xl font-bold tracking-tighter uppercase mb-4 md:mb-6">{title}</h2>
           <p className="text-[7px] md:text-[10px] font-bold tracking-[0.1em] leading-[1.6] uppercase">
-            The artist's ability to transcend <br/>
-            boundaries and connect with a <br/>
-            global audience is a testament to <br/>
-            the universal language of squidwod <br/>
-            visual storytelling
+            {descriptionLines.map((line, i) => <span key={i}>{line} <br/></span>)}
           </p>
         </div>
       </div>

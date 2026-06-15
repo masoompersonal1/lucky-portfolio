@@ -1,7 +1,16 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
-export default function Footer() {
+export interface FooterProps {
+  data?: {
+    mediaUrl?: string;
+  }
+}
+
+export default function Footer({ data }: FooterProps) {
+  const mediaUrl = data?.mediaUrl || "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=1600&grayscale=true"
+  const isVideo = mediaUrl.match(/\.(mp4|webm|ogg)$/i)
+
   return (
     <footer id="contact" className="relative w-full min-h-[50vh] md:min-h-screen bg-black overflow-hidden flex flex-col justify-end">
       
@@ -11,12 +20,20 @@ export default function Footer() {
         Because it fills the footer, it acts as the background for the bottom half AND shows through the text!
       */}
       <div className="absolute inset-0 z-0 pointer-events-none">
-        <Image 
-          src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=1600&grayscale=true" 
-          alt="Contact Background" 
-          fill 
-          className="object-cover object-center md:object-bottom"
-        />
+        {isVideo ? (
+          <video 
+            src={mediaUrl}
+            className="w-full h-full object-cover object-center md:object-bottom"
+            autoPlay muted loop playsInline
+          />
+        ) : (
+          <Image 
+            src={mediaUrl} 
+            alt="Contact Background" 
+            fill 
+            className="object-cover object-center md:object-bottom"
+          />
+        )}
       </div>
 
       {/* 

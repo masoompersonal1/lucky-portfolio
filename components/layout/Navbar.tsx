@@ -1,12 +1,14 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
 import Link from 'next/link'
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
+  const router = useRouter()
 
   const links = [
     { name: 'ABOUT ME', href: '#about' },
@@ -17,9 +19,9 @@ export default function Navbar() {
 
   return (
     <nav className="absolute top-0 left-0 w-full z-50 py-8 px-8 md:px-16 flex justify-between items-center bg-transparent">
-      {/* Left Logo (Text) */}
-      <div className="flex-shrink-0">
-        <div className="font-['Brush_Script_MT','Brush_Script_Std',cursive] text-2xl leading-none text-white drop-shadow-md tracking-wider">
+      {/* Left Logo (Text) - Double click for Admin */}
+      <div className="flex-shrink-0 cursor-pointer" onDoubleClick={() => router.push('/admin')}>
+        <div className="font-['Brush_Script_MT','Brush_Script_Std',cursive] text-2xl leading-none text-white drop-shadow-md tracking-wider select-none">
           Prince<br />Lucky
         </div>
       </div>

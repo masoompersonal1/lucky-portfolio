@@ -5,37 +5,47 @@ import Works from "@/components/sections/Works";
 import Services from "@/components/sections/Services";
 import Exhibitions from "@/components/sections/Exhibitions";
 import Footer from "@/components/sections/Footer";
-import { client } from "@/sanity/lib/client";
-import { heroQuery } from "@/lib/sanity/queries";
+import connectToDatabase from "@/lib/mongodb";
+import { PortfolioContent } from "@/lib/models";
+
+export const revalidate = 0; // Force dynamic rendering so updates reflect instantly without rebuilding
 
 export default async function Home() {
-  let heroData = null;
+  let content = null;
   
   try {
-    heroData = await client.fetch(heroQuery);
+    await connectToDatabase();
+    const doc = await PortfolioContent.findOne();
+    if (doc) {
+      // Convert mongoose document to plain object to pass as props safely
+      content = JSON.parse(JSON.stringify(doc));
+    }
   } catch (error) {
-    console.warn("Failed to fetch Sanity data (likely using dummy project ID). Using fallbacks.");
+    console.warn("Failed to fetch MongoDB content.");
   }
+
+  // Fallback to empty objects if content missing
+  const data = content || {};
 
   return (
     <main className="w-full min-h-screen relative flex flex-col overflow-x-hidden bg-[#c0c0c0]">
       <Navbar />
-      <Hero data={heroData} />
+      <Hero data={data.hero} />
       
       {/* About Section */}
-      <About />
+      <About data={data.about} />
       
       {/* Works Section */}
-      <Works />
+      <Works data={data.works} />
       
       {/* Services Section */}
-      <Services />
+      <Services data={data.services} />
       
       {/* Exhibitions Section */}
-      <Exhibitions />
+      <Exhibitions data={data.exhibitions} />
 
       {/* Footer Section */}
-      <Footer />
+      <Footer data={data.footer} />
     </main>
   );
 }

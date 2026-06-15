@@ -13,7 +13,25 @@ const IMAGES = [
   "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&q=80&w=800&grayscale=true"
 ]
 
-export default function About() {
+export interface AboutProps {
+  data?: {
+    title?: string;
+    description?: string;
+    mediaList?: { url: string }[];
+  }
+}
+
+export default function About({ data }: AboutProps) {
+  const title = data?.title || "About Me"
+  const descriptionLines = (data?.description || "DISTINGUISHED BY A MYRIAD OF\nACCOLADES AND INTERNATIONAL\nRECOGNITION, SQUIDWOD STANDS\nAS A LUMINARY IN THE REALM OF\nVISUAL STORYTELLING").split('\n')
+  const IMAGES = data?.mediaList?.map(m => m.url) || [
+    "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=800&grayscale=true",
+    "https://images.unsplash.com/photo-1542038784456-1ea8e935640e?auto=format&fit=crop&q=80&w=800&grayscale=true",
+    "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=800&grayscale=true",
+    "https://images.unsplash.com/photo-1555952517-2e8e729e0b44?auto=format&fit=crop&q=80&w=800&grayscale=true",
+    "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&q=80&w=800&grayscale=true"
+  ]
+
   const [activeIndex, setActiveIndex] = useState(0)
 
   const handleNext = () => {
@@ -31,14 +49,10 @@ export default function About() {
       <div className="flex-1 flex flex-col z-10 pt-10 md:pt-10 order-1">
         <div className="max-w-md translate-x-0 translate-y-[-90px] md:translate-x-[30px] md:translate-y-[-50px]">
           <h2 className="text-4xl md:text-5xl font-light uppercase tracking-tighter mb-6">
-            About Me
+            {title}
           </h2>
           <p className="text-[11px] md:text-lg font-semibold tracking-wider leading-snug uppercase">
-            DISTINGUISHED BY A MYRIAD OF <br />
-            ACCOLADES AND INTERNATIONAL <br />
-            RECOGNITION, SQUIDWOD STANDS <br />
-            AS A LUMINARY IN THE REALM OF <br />
-            VISUAL STORYTELLING
+            {descriptionLines.map((line, i) => <span key={i}>{line} <br /></span>)}
           </p>
         </div>
       </div>

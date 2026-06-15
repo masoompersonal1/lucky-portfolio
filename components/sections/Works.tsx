@@ -1,18 +1,38 @@
 import Image from 'next/image'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
 
-const gridImages = [
-  "https://images.unsplash.com/photo-1541185933-ef5d8ed016c2?auto=format&fit=crop&q=80&w=800&grayscale=true", // Wide bridge
-  "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=800&grayscale=true", // Portrait
-  "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=800&grayscale=true", // Curves
-  "https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?auto=format&fit=crop&q=80&w=800&grayscale=true", // Faces
-  "https://images.unsplash.com/photo-1548625361-ec8492067568?auto=format&fit=crop&q=80&w=800&grayscale=true", // Window
-  "https://images.unsplash.com/photo-1618090584126-129cd1f3f316?auto=format&fit=crop&q=80&w=800&grayscale=true", // Red square overlay (man profile)
-  "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&q=80&w=800&grayscale=true", // Bridge tower
-  "https://images.unsplash.com/photo-1449844908441-8829872d2607?auto=format&fit=crop&q=80&w=800&grayscale=true"  // Wide silhouette
-]
+export interface WorksProps {
+  data?: {
+    year?: string;
+    title?: string;
+    description?: string;
+    mediaList?: { url: string }[];
+  }
+}
 
-export default function Works() {
+export default function Works({ data }: WorksProps) {
+  const year = data?.year || "2023"
+  const title = data?.title || "My Works"
+  const descriptionLines = (data?.description || "Every image is a meticulous\ncomposition, carefully curated to\nevoke emotion and provoke thought.\nWhether it's a candid moment frozen\nin time or the grandeur of nature's\nspectacle").split('\n')
+  
+  const defaultImages = [
+    "https://images.unsplash.com/photo-1541185933-ef5d8ed016c2?auto=format&fit=crop&q=80&w=800&grayscale=true",
+    "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=800&grayscale=true",
+    "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=800&grayscale=true",
+    "https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?auto=format&fit=crop&q=80&w=800&grayscale=true",
+    "https://images.unsplash.com/photo-1548625361-ec8492067568?auto=format&fit=crop&q=80&w=800&grayscale=true",
+    "https://images.unsplash.com/photo-1618090584126-129cd1f3f316?auto=format&fit=crop&q=80&w=800&grayscale=true",
+    "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&q=80&w=800&grayscale=true",
+    "https://images.unsplash.com/photo-1449844908441-8829872d2607?auto=format&fit=crop&q=80&w=800&grayscale=true"
+  ]
+
+  const gridImages = data?.mediaList && data.mediaList.length >= 8 
+    ? data.mediaList.map(m => m.url) 
+    : [
+      ...((data?.mediaList || []).map(m => m.url)), 
+      ...defaultImages
+    ].slice(0, 8)
+
   return (
     <section id="works" className="w-full min-h-0 md:min-h-screen bg-[#c0c0c0] relative px-4 md:px-16 pt-16 md:pt-24 pb-8 md:pb-16 text-black flex flex-col">
       
@@ -20,7 +40,7 @@ export default function Works() {
       <div className="w-full flex justify-between items-start mb-8 md:mb-12 max-w-[1200px] mx-auto">
         {/* Left Side: Year and Arrows */}
         <div className="flex flex-col gap-8 md:gap-16">
-          <h2 className="text-3xl md:text-5xl font-medium tracking-tighter">2023</h2>
+          <h2 className="text-3xl md:text-5xl font-medium tracking-tighter">{year}</h2>
           <div className="flex items-center gap-2 md:gap-4">
             <button className="w-10 h-10 md:w-12 md:h-12 rounded-full border border-black flex justify-center items-center hover:bg-black hover:text-white transition-colors">
               <ArrowLeft size={18} strokeWidth={1.5} />
@@ -39,14 +59,9 @@ export default function Works() {
 
         {/* Right Side: Title and Paragraph */}
         <div className="flex flex-col items-end text-right max-w-[200px] md:max-w-[400px]">
-          <h2 className="text-3xl md:text-4xl font-bold tracking-tighter uppercase mb-4 md:mb-6">My Works</h2>
+          <h2 className="text-3xl md:text-4xl font-bold tracking-tighter uppercase mb-4 md:mb-6">{title}</h2>
           <p className="text-[7px] md:text-[10px] font-bold tracking-[0.1em] leading-[1.6] uppercase">
-            Every image is a meticulous <br/>
-            composition, carefully curated to <br/>
-            evoke emotion and provoke thought. <br/>
-            Whether it's a candid moment frozen <br/>
-            in time or the grandeur of nature's <br/>
-            spectacle
+            {descriptionLines.map((line, i) => <span key={i}>{line} <br/></span>)}
           </p>
         </div>
       </div>
