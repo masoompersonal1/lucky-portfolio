@@ -194,7 +194,7 @@ export default function AdminDashboard() {
       if (res.ok) {
         sessionStorage.setItem('admin_auth', 'true');
         setIsAuthenticated(true);
-        fetchContent();
+        await fetchContent();
       } else {
         const data = await res.json();
         setLoginError(data.error || 'Login failed');
@@ -270,7 +270,7 @@ export default function AdminDashboard() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-zinc-900 via-zinc-950 to-zinc-950 pointer-events-none"/>
         <form onSubmit={handleLogin} className="relative bg-zinc-900/50 backdrop-blur-xl border border-zinc-800/50 p-10 rounded-[2rem] w-full max-w-sm flex flex-col space-y-6 shadow-2xl">
           <div className="text-center mb-4">
-            <h2 className="text-3xl font-black tracking-tighter mb-2">Squidwod</h2>
+            <h2 className="text-3xl font-black tracking-tighter mb-2">Prince.</h2>
             <p className="text-zinc-500 font-medium text-sm tracking-widest uppercase">Admin Portal</p>
           </div>
           {loginError && <p className="text-red-400 text-sm font-medium text-center bg-red-950/30 py-2 rounded-lg border border-red-900/50">{loginError}</p>}
@@ -311,7 +311,7 @@ export default function AdminDashboard() {
       
       {/* Mobile Header */}
       <div className="md:hidden flex items-center justify-between p-6 border-b border-zinc-900 bg-zinc-950 z-50">
-        <h1 className="text-xl font-black tracking-tighter">Squidwod.</h1>
+        <h1 className="text-xl font-black tracking-tighter">Prince.</h1>
         <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="p-2 bg-zinc-900 rounded-lg">
           {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
@@ -324,7 +324,7 @@ export default function AdminDashboard() {
             initial={{ x: -300 }} animate={{ x: 0 }} exit={{ x: -300 }} transition={{ type: "spring", bounce: 0, duration: 0.4 }}
             className={`fixed md:relative top-[73px] md:top-0 left-0 h-[calc(100dvh-73px)] md:h-[100dvh] w-64 bg-zinc-950/90 md:bg-zinc-950 border-r border-zinc-900 p-6 flex flex-col space-y-2 z-40 backdrop-blur-xl md:backdrop-blur-none`}
           >
-            <h1 className="hidden md:block text-2xl font-black tracking-tighter mb-8 px-4 text-zinc-100">Squidwod.</h1>
+            <h1 className="hidden md:block text-2xl font-black tracking-tighter mb-8 px-4 text-zinc-100">Prince.</h1>
             <div className="flex-1 overflow-y-auto space-y-1 pr-2">
               {tabs.map(tab => (
                 <button 
