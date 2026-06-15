@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react';
-import { Menu, X, Save, LogOut, Image as ImageIcon, Link as LinkIcon, Upload, Loader2, CheckCircle2 } from 'lucide-react';
+import { Menu, X, Save, LogOut, Image as ImageIcon, Link as LinkIcon, Upload, Loader2, CheckCircle2, ArrowLeft, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 // --- CUSTOM UI COMPONENTS ---
