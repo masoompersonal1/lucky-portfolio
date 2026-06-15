@@ -469,15 +469,127 @@ export default function AdminDashboard() {
               </div>
             )}
 
-            {activeTab === 'Credentials' && (
-               <CredentialUpdateForm setToastMsg={setToastMsg} />
+            {activeTab === 'Services' && (
+              <div className="space-y-6">
+                <div className="bg-zinc-900/50 p-6 md:p-8 rounded-3xl border border-zinc-800">
+                  <label className="block mb-8"><span className="text-zinc-400 font-medium block mb-3">Description</span>
+                    <textarea className="w-full p-5 bg-zinc-950 border border-zinc-800 rounded-xl outline-none focus:border-white transition-colors h-32" value={content.services.description} onChange={e => updateNestedField(['services', 'description'], e.target.value)} />
+                  </label>
+                  
+                  <div className="pt-6 border-t border-zinc-800">
+                    <span className="text-zinc-300 font-medium mb-6 block">Services List</span>
+                    <div className="space-y-4">
+                      {content.services.list?.map((item: any, idx: number) => (
+                        <div key={idx} className="flex flex-col md:flex-row items-center gap-4 bg-zinc-950 p-4 rounded-xl border border-zinc-900">
+                          <div 
+                            className="w-full md:w-32 h-20 bg-zinc-900 rounded-lg overflow-hidden border border-zinc-800 relative group cursor-pointer shrink-0"
+                            onClick={() => openUploader(['services', 'list', idx, 'mediaUrl'], item.publicId)}
+                          >
+                            {item.mediaUrl?.match(/\.(mp4|webm|ogg)$/i) 
+                              ? <video src={item.mediaUrl} className="w-full h-full object-cover" autoPlay muted loop />
+                              : <img src={item.mediaUrl} className="w-full h-full object-cover" alt={item.title} />
+                            }
+                            <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity z-30"><Upload size={20} className="text-white"/></div>
+                          </div>
+                          <input 
+                            type="text" 
+                            className="w-full p-4 bg-zinc-900 border border-zinc-800 rounded-xl outline-none focus:border-white transition-colors" 
+                            value={item.title} 
+                            placeholder="Service Title"
+                            onChange={e => updateNestedField(['services', 'list', idx, 'title'], e.target.value)} 
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
             )}
-            
-            {activeTab === 'Services' && <p className="text-zinc-500">Edit Services (Code hidden for brevity, same structure applies)</p>}
-            {activeTab === 'Exhibitions' && <p className="text-zinc-500">Edit Exhibitions (Code hidden for brevity, same structure applies)</p>}
-            {activeTab === 'Footer' && <p className="text-zinc-500">Edit Footer (Code hidden for brevity, same structure applies)</p>}
 
-          </div>
+            {activeTab === 'Exhibitions' && (
+              <div className="space-y-6">
+                <div className="bg-zinc-900/50 p-6 md:p-8 rounded-3xl border border-zinc-800">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <label className="block"><span className="text-zinc-400 font-medium block mb-3">Year</span>
+                      <input type="text" className="w-full p-4 bg-zinc-950 border border-zinc-800 rounded-xl outline-none focus:border-white transition-colors" value={content.exhibitions.year} onChange={e => updateNestedField(['exhibitions', 'year'], e.target.value)} />
+                    </label>
+                    <label className="block"><span className="text-zinc-400 font-medium block mb-3">Title</span>
+                      <input type="text" className="w-full p-4 bg-zinc-950 border border-zinc-800 rounded-xl outline-none focus:border-white transition-colors" value={content.exhibitions.title} onChange={e => updateNestedField(['exhibitions', 'title'], e.target.value)} />
+                    </label>
+                  </div>
+                  <label className="block mb-8"><span className="text-zinc-400 font-medium block mb-3">Description</span>
+                    <textarea className="w-full p-5 bg-zinc-950 border border-zinc-800 rounded-xl outline-none focus:border-white transition-colors h-32" value={content.exhibitions.description} onChange={e => updateNestedField(['exhibitions', 'description'], e.target.value)} />
+                  </label>
+                  
+                  <div className="pt-6 border-t border-zinc-800">
+                    <div className="flex justify-between items-center mb-6">
+                      <span className="text-zinc-300 font-medium">Exhibitions List</span>
+                      <button 
+                        onClick={() => {
+                          const newList = [...(content.exhibitions.list || [])];
+                          newList.push({ text: "NEW LOCATION\nNEW STUDIO", mediaUrl: "", publicId: "" });
+                          updateNestedField(['exhibitions', 'list'], newList);
+                        }}
+                        className="text-xs bg-white text-black px-3 py-1 rounded-full font-bold hover:bg-zinc-200 transition"
+                      >
+                        + Add Exhibition
+                      </button>
+                    </div>
+                    <div className="space-y-4">
+                      {content.exhibitions.list?.map((item: any, idx: number) => (
+                        <div key={idx} className="flex flex-col md:flex-row items-start gap-4 bg-zinc-950 p-4 rounded-xl border border-zinc-900 relative">
+                          <button 
+                            onClick={() => {
+                              const newList = content.exhibitions.list.filter((_: any, i: number) => i !== idx);
+                              updateNestedField(['exhibitions', 'list'], newList);
+                            }}
+                            className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full p-1 hover:bg-red-500 z-40"
+                          >
+                            <X size={14} />
+                          </button>
+                          <div 
+                            className="w-full md:w-48 h-32 bg-zinc-900 rounded-lg overflow-hidden border border-zinc-800 relative group cursor-pointer shrink-0"
+                            onClick={() => openUploader(['exhibitions', 'list', idx, 'mediaUrl'], item.publicId)}
+                          >
+                            {item.mediaUrl?.match(/\.(mp4|webm|ogg)$/i) 
+                              ? <video src={item.mediaUrl} className="w-full h-full object-cover" autoPlay muted loop />
+                              : <img src={item.mediaUrl} className="w-full h-full object-cover" alt="Exhibition" />
+                            }
+                            <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity z-30"><Upload size={20} className="text-white"/></div>
+                          </div>
+                          <textarea 
+                            className="w-full h-32 p-4 bg-zinc-900 border border-zinc-800 rounded-xl outline-none focus:border-white transition-colors" 
+                            value={item.text} 
+                            placeholder="LOCATION, DATE&#10;STUDIO NAME"
+                            onChange={e => updateNestedField(['exhibitions', 'list', idx, 'text'], e.target.value)} 
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'Footer' && (
+              <div className="space-y-6">
+                <div className="bg-zinc-900/50 p-6 md:p-8 rounded-3xl border border-zinc-800">
+                  <span className="text-zinc-400 font-medium block mb-4">Background Media</span>
+                  <div className="flex flex-col sm:flex-row gap-6 items-start sm:items-center">
+                    <div className="w-full sm:w-64 aspect-video rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-800 relative group cursor-pointer" onClick={() => openUploader(['footer', 'mediaUrl'], content.footer.mediaPublicId)}>
+                      {content.footer.mediaUrl?.match(/\.(mp4|webm|ogg)$/i) 
+                        ? <video src={content.footer.mediaUrl} className="w-full h-full object-cover" autoPlay muted loop />
+                        : <img src={content.footer.mediaUrl} className="w-full h-full object-cover" alt="Footer Media" />
+                      }
+                      <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition flex items-center justify-center"><Upload size={24}/></div>
+                    </div>
+                    <div className="flex-1 space-y-2">
+                      <p className="text-sm text-zinc-500">Click the media thumbnail to upload a new video or image, or paste a direct URL. This replaces the contact footer background.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
         </div>
       </div>
 
