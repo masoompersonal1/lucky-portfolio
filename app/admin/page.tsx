@@ -590,7 +590,12 @@ export default function AdminDashboard() {
                 </div>
               </div>
             )}
-        </div>
+
+            {activeTab === 'Credentials' && (
+               <CredentialUpdateForm setToastMsg={setToastMsg} />
+            )}
+
+          </div>
       </div>
 
       <UploadModal 
