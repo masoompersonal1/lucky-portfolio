@@ -47,7 +47,7 @@ export default function Hero({ data }: HeroProps) {
           className="relative w-full h-full"
         >
           <Image 
-            src={"/img2.jpeg"} 
+            src={"/hero.jpeg"} 
             alt="Hero Portrait" 
             fill 
             className="object-cover object-top grayscale brightness-50 contrast-125"
