@@ -7,6 +7,7 @@ import Exhibitions from "@/components/sections/Exhibitions";
 import Footer from "@/components/sections/Footer";
 import connectToDatabase from "@/lib/mongodb";
 import { PortfolioContent } from "@/lib/models";
+import ClientAppWrapper from "@/components/ClientAppWrapper";
 
 export const revalidate = 0; // Force dynamic rendering so updates reflect instantly without rebuilding
 
@@ -28,25 +29,27 @@ export default async function Home() {
   const data = content || {};
 
   return (
-    <main className="w-full min-h-screen relative flex flex-col overflow-x-hidden bg-[#c0c0c0]">
-      <Navbar />
-      <Hero data={data.hero} />
-      
-      {/* About Section */}
-      <About data={data.about} />
-      
-      {/* Works Section */}
-      <Works data={data.works} />
-      
-      {/* Services Section */}
-      <Services data={data.services} />
-      
-      {/* Exhibitions Section */}
-      <Exhibitions data={data.exhibitions} />
+    <ClientAppWrapper>
+      <main className="w-full min-h-screen relative flex flex-col overflow-x-hidden bg-[#c0c0c0]">
+        <Navbar />
+        <Hero data={data.hero} />
+        
+        {/* About Section */}
+        <About data={data.about} />
+        
+        {/* Works Section */}
+        <Works data={data.works} />
+        
+        {/* Services Section */}
+        <Services data={data.services} />
+        
+        {/* Exhibitions Section */}
+        <Exhibitions data={data.exhibitions} />
 
-      {/* Footer Section */}
-      <Footer data={data.footer} />
-    </main>
+        {/* Footer Section */}
+        <Footer data={data.footer} />
+      </main>
+    </ClientAppWrapper>
   );
 }
 

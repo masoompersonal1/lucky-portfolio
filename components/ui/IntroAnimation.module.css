@@ -1,0 +1,366 @@
+.container {
+  --plastic-beige: #f4f1ea;
+  --plastic-shadow: #dcd8cf;
+  --lens-black: #111;
+  --stripe-red: #e73639;
+  --stripe-orange: #f28c31;
+  --stripe-yellow: #fcd958;
+  --stripe-green: #67b848;
+  --stripe-blue: #2c93d8;
+  margin: 0;
+  background-color: #222;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Righteous", cursive;
+  overflow: hidden;
+  background-image: repeating-linear-gradient(
+      45deg,
+      #1a1a1a 0,
+      #1a1a1a 1px,
+      transparent 1px,
+      transparent 10px
+    ),
+    radial-gradient(#333, #000);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 99999;
+}
+
+.cameraWrapper {
+  position: relative;
+  width: 340px;
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  perspective: 1000px;
+}
+
+.shutterInput {
+  display: none;
+}
+
+.cameraBody {
+  position: relative;
+  width: 320px;
+  height: 340px;
+  background-color: var(--plastic-beige);
+  border-radius: 30px 30px 40px 40px;
+  box-shadow:
+    inset 0 0 20px rgba(0, 0, 0, 0.1),
+    0 20px 40px rgba(0, 0, 0, 0.5);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+  overflow: hidden;
+}
+
+.cameraBody::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  border-radius: 30px;
+  box-shadow: inset 2px 2px 5px rgba(255, 255, 255, 0.8);
+  pointer-events: none;
+  z-index: 20;
+}
+
+.rainbowStripe {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 60px;
+  background: linear-gradient(
+    to right,
+    var(--stripe-red) 20%,
+    var(--stripe-orange) 20% 40%,
+    var(--stripe-yellow) 40% 60%,
+    var(--stripe-green) 60% 80%,
+    var(--stripe-blue) 80%
+  );
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+}
+
+.bottomLip {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 20px;
+  background: #e6e2d8;
+  border-top: 2px solid #ccc;
+  z-index: 15;
+}
+
+.lensHousing {
+  width: 180px;
+  height: 180px;
+  background: #111;
+  border-radius: 50%;
+  margin-top: 40px;
+  position: relative;
+  z-index: 5;
+  box-shadow:
+    0 10px 20px rgba(0, 0, 0, 0.4),
+    0 0 0 4px #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.lensRing {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  border: 2px dashed #444;
+  position: absolute;
+  animation: focus-turn 10s linear infinite;
+}
+@keyframes focus-turn {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.lensGlass {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #444, #000 70%);
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 0 10px #000;
+}
+
+.lensGlass::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+      circle at 60% 40%,
+      rgba(255, 255, 255, 0.1) 0%,
+      transparent 10%
+    ),
+    radial-gradient(
+      circle at 40% 60%,
+      rgba(100, 0, 255, 0.2) 0%,
+      transparent 20%
+    ),
+    linear-gradient(
+      135deg,
+      transparent 45%,
+      rgba(255, 255, 255, 0.2) 50%,
+      transparent 55%
+    );
+}
+
+.aperture {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  background: #050505;
+  border-radius: 50%;
+  border: 1px solid #333;
+}
+
+.viewfinder {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  width: 60px;
+  height: 50px;
+  background: #222;
+  border-radius: 5px;
+  border: 4px solid #ccc;
+  box-shadow: inset 0 0 10px #000;
+  overflow: hidden;
+}
+.viewfinder::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent);
+}
+
+.flashUnit {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  width: 80px;
+  height: 30px;
+  background: #eee;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background-image: repeating-linear-gradient(
+    90deg,
+    #ddd 0,
+    #ddd 2px,
+    transparent 2px,
+    transparent 4px
+  );
+}
+
+.shutterBtn {
+  position: absolute;
+  bottom: 40px;
+  right: 30px;
+  width: 60px;
+  height: 60px;
+  background: radial-gradient(circle at 30% 30%, #ff4d4d, #cc0000);
+  border-radius: 50%;
+  border: 4px solid #ddd;
+  cursor: pointer;
+  box-shadow:
+    0 5px 10px rgba(0, 0, 0, 0.3),
+    inset 0 2px 5px rgba(255, 255, 255, 0.4);
+  z-index: 20;
+  transition: transform 0.1s;
+}
+
+.shutterBtn:active {
+  transform: scale(0.95);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.labelPlate {
+  position: absolute;
+  bottom: 40px;
+  left: 30px;
+  font-size: 0.8rem;
+  color: #888;
+  background: #e6e2d8;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.filmSlot {
+  position: absolute;
+  top: 300px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 240px;
+  height: 280px;
+  background: #fff;
+  padding: 15px 15px 50px 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* The element that zooms into the full screen */
+.filmSlot.zooming {
+  transition: all 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+  transform: translateX(-50%) translate(0, -50vh) scale(15);
+  z-index: 9999;
+  opacity: 0; /* Fades out completely to reveal site below */
+}
+
+.filmImage {
+  width: 100%;
+  height: 100%;
+  background: #000;
+  overflow: hidden;
+  position: relative;
+}
+
+.filmContent {
+  width: 100%;
+  height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.4'/%3E%3C/svg%3E"),
+    linear-gradient(to bottom, #87ceeb, #228b22);
+  background-size: cover;
+  opacity: 0;
+}
+
+.filmContent::after {
+  content: "⛰";
+  position: absolute;
+  bottom: 10px;
+  left: 20px;
+  font-size: 4rem;
+  color: #333;
+  opacity: 0.8;
+}
+.filmContent::before {
+  content: "☀";
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 3rem;
+  color: yellow;
+  opacity: 0.8;
+}
+
+.shutterInput:checked ~ .filmSlot {
+  transform: translate(-50%, 220px) rotate(-2deg);
+  z-index: 5;
+}
+.shutterInput:checked ~ .filmSlot .filmContent {
+  animation: develop 4s ease-in forwards;
+  animation-delay: 0.6s;
+}
+
+@keyframes develop {
+  0% {
+    opacity: 0;
+    filter: grayscale(100%) contrast(200%);
+  }
+  50% {
+    opacity: 0.5;
+    filter: grayscale(50%) contrast(150%);
+  }
+  100% {
+    opacity: 1;
+    filter: grayscale(0%) contrast(100%) sepia(20%);
+  }
+}
+
+.flashOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #fff;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 999999;
+}
+
+.shutterInput:checked ~ .flashOverlay {
+  animation: flash-bang 0.2s ease-out;
+}
+
+@keyframes flash-bang {
+  0% { opacity: 0.8; }
+  100% { opacity: 0; }
+}
+
+.shutterInput:checked ~ .cameraBody .shutterBtn {
+  transform: scale(0.95);
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.shutterLabel {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
