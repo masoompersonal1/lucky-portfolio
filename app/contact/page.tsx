@@ -49,9 +49,9 @@ export default async function ContactPage() {
           
           <a 
             href={`mailto:${footer.email || "hello@example.com"}`} 
-            className="block w-full py-4 px-8 bg-black text-white text-xl font-bold tracking-widest uppercase hover:bg-[#cc0000] transition-colors rounded-full"
+            className="block w-full py-4 px-8 bg-black text-white text-xl font-bold tracking-widest uppercase hover:bg-[#cc0000] transition-colors rounded-full truncate"
           >
-            Send an Email
+            {footer.email || "hello@example.com"}
           </a>
 
           {footer.mobile && (
