@@ -161,7 +161,7 @@ export default function AdminDashboard() {
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
   // Uploader State
-  const [uploadState, setUploadState] = useState<{isOpen: boolean, path: string[], oldPid: string}>({ isOpen: false, path: [], oldPid: '' });
+  const [uploadState, setUploadState] = useState<{isOpen: boolean, path: (string | number)[], oldPid: string}>({ isOpen: false, path: [], oldPid: '' });
   const [currentAdminGridIndex, setCurrentAdminGridIndex] = useState(0);
 
   useEffect(() => {
@@ -222,7 +222,7 @@ export default function AdminDashboard() {
     setSaving(false);
   };
 
-  const updateNestedField = (path: string[], value: any) => {
+  const updateNestedField = (path: (string | number)[], value: any) => {
     const newContent = { ...content };
     let current = newContent;
     for (let i = 0; i < path.length - 1; i++) {
@@ -232,7 +232,7 @@ export default function AdminDashboard() {
     setContent(newContent);
   };
 
-  const openUploader = (path: string[], oldPid: string) => {
+  const openUploader = (path: (string | number)[], oldPid: string) => {
     setUploadState({ isOpen: true, path, oldPid });
   };
 
