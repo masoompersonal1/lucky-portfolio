@@ -110,13 +110,21 @@ export default function About({ data }: AboutProps) {
                   className="absolute inset-0 bg-white shadow-2xl overflow-hidden"
                   style={{ zIndex }}
                 >
-                  <Image
-                    src={img}
-                    alt={`Gallery image ${index + 1}`}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, 400px"
-                  />
+                  {img.match(/\.(mp4|webm|ogg)$/i) ? (
+                    <video 
+                      src={img} 
+                      className="w-full h-full object-cover" 
+                      autoPlay muted loop playsInline 
+                    />
+                  ) : (
+                    <Image
+                      src={img}
+                      alt={`Gallery image ${index + 1}`}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, 400px"
+                    />
+                  )}
                 </motion.div>
               )
             })}

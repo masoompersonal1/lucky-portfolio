@@ -454,17 +454,37 @@ export default function AdminDashboard() {
                         >
                           <ArrowRight size={16} />
                         </button>
-                        <button 
-                          onClick={() => {
-                            const newGrids = [...(content.works.grids || [])];
-                            newGrids.push({ mediaList: [] });
-                            updateNestedField(['works', 'grids'], newGrids);
-                            setCurrentAdminGridIndex(newGrids.length - 1);
-                          }}
-                          className="text-xs bg-white text-black px-3 py-2 rounded-lg font-bold hover:bg-zinc-200 ml-2"
-                        >
-                          + Add Grid
-                        </button>
+                        <div className="flex items-center ml-2 gap-2">
+                          <button 
+                            onClick={() => {
+                              const newGrids = [...(content.works.grids || [])];
+                              newGrids.push({ mediaList: [] });
+                              updateNestedField(['works', 'grids'], newGrids);
+                              setCurrentAdminGridIndex(newGrids.length - 1);
+                            }}
+                            className="text-xs bg-white text-black px-3 py-2 rounded-lg font-bold hover:bg-zinc-200"
+                          >
+                            + Add Grid
+                          </button>
+                          
+                          <button 
+                            onClick={() => {
+                              if (!content.works.grids || content.works.grids.length <= 1) {
+                                alert("You cannot delete the last grid. Just replace its images.");
+                                return;
+                              }
+                              const newGrids = [...content.works.grids];
+                              newGrids.splice(currentAdminGridIndex, 1);
+                              updateNestedField(['works', 'grids'], newGrids);
+                              setCurrentAdminGridIndex(Math.max(0, currentAdminGridIndex - 1));
+                            }}
+                            disabled={!content.works.grids || content.works.grids.length <= 1}
+                            className="p-2 text-zinc-500 hover:text-red-400 hover:bg-red-950/30 rounded-lg transition disabled:opacity-50 disabled:hover:bg-transparent disabled:hover:text-zinc-500"
+                            title="Delete current grid"
+                          >
+                            <Trash2 size={16} />
+                          </button>
+                        </div>
                       </div>
                     </div>
                     <p className="text-sm text-zinc-500 mb-6">Click any block in the grid to change its media. Use the arrows to paginate through different grids.</p>
@@ -520,6 +540,61 @@ export default function AdminDashboard() {
                 <label className="block mb-6"><span className="text-zinc-400 font-medium block mb-3">Description</span>
                   <textarea className="w-full p-5 bg-zinc-950 border border-zinc-800 rounded-xl outline-none focus:border-white transition-colors h-48" value={content.about.description} onChange={e => updateNestedField(['about', 'description'], e.target.value)} />
                 </label>
+
+                <div className="pt-6 border-t border-zinc-800">
+                  <div className="flex items-center justify-between mb-6">
+                    <span className="text-zinc-300 font-medium block">Media Stack (Images & Videos)</span>
+                    <button 
+                      onClick={() => {
+                        const newList = [...(content.about.mediaList || [])];
+                        newList.push({ url: '', publicId: '' });
+                        updateNestedField(['about', 'mediaList'], newList);
+                      }}
+                      className="px-4 py-2 bg-white text-black text-xs font-bold rounded-full hover:bg-zinc-200 transition flex items-center gap-2"
+                    >
+                      <Plus size={14}/> Add Media
+                    </button>
+                  </div>
+                  
+                  <div className="space-y-4">
+                    {content.about.mediaList?.map((item: any, idx: number) => {
+                      const isVideo = item.url?.match(/\.(mp4|webm|ogg)$/i);
+                      return (
+                        <div key={idx} className="flex items-center gap-4 bg-zinc-950 p-4 rounded-xl border border-zinc-900">
+                          <div 
+                            className="w-24 h-24 bg-zinc-900 rounded-lg overflow-hidden border border-zinc-800 relative group cursor-pointer shrink-0"
+                            onClick={() => openUploader(['about', 'mediaList', idx, 'url'], item.publicId)}
+                          >
+                            {isVideo 
+                              ? <video src={item.url} className="w-full h-full object-cover" autoPlay muted loop playsInline /> 
+                              : (item.url ? <img src={item.url} className="w-full h-full object-cover" alt="About Media" /> : <div className="w-full h-full flex items-center justify-center text-zinc-600 text-xs">Empty</div>)
+                            }
+                            <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity z-30"><Upload size={16} className="text-white"/></div>
+                          </div>
+                          
+                          <div className="flex-1">
+                            <p className="text-xs text-zinc-500 mb-1">Media #{idx + 1}</p>
+                            <p className="text-sm text-zinc-300 truncate max-w-[200px] md:max-w-md">{item.url || "No media uploaded"}</p>
+                          </div>
+
+                          <button 
+                            onClick={() => {
+                              const newList = [...content.about.mediaList];
+                              newList.splice(idx, 1);
+                              updateNestedField(['about', 'mediaList'], newList);
+                            }}
+                            className="p-3 text-zinc-500 hover:text-red-400 hover:bg-red-950/30 rounded-lg transition"
+                          >
+                            <Trash2 size={18} />
+                          </button>
+                        </div>
+                      )
+                    })}
+                    {(!content.about.mediaList || content.about.mediaList.length === 0) && (
+                      <p className="text-sm text-zinc-500 text-center py-8 border border-dashed border-zinc-800 rounded-xl">No media items added yet.</p>
+                    )}
+                  </div>
+                </div>
               </div>
             )}
 
@@ -685,7 +760,7 @@ export default function AdminDashboard() {
                           value={content.footer?.mobile || ''} 
                           onChange={e => updateNestedField(['footer', 'mobile'], e.target.value)}
                           className="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-4 text-white focus:outline-none focus:border-zinc-600 transition-colors"
-                          placeholder="+1 234 567 8900"
+                          placeholder="+91 76763 43642"
                         />
                       </label>
                     </div>
