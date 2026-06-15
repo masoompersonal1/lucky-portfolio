@@ -22,6 +22,8 @@ export interface IPortfolioContent extends Document {
     signatureSubtext: string;
     mediaUrl: string;
     mediaPublicId: string;
+    mobileMediaUrl: string;
+    mobileMediaPublicId: string;
   };
   about: {
     title: string;
@@ -57,6 +59,8 @@ export interface IPortfolioContent extends Document {
   footer: {
     mediaUrl: string;
     mediaPublicId: string;
+    mobileMediaUrl: string;
+    mobileMediaPublicId: string;
   };
   socials: {
     instagram: string;
@@ -71,6 +75,8 @@ const PortfolioContentSchema = new Schema({
     signatureSubtext: String,
     mediaUrl: String,
     mediaPublicId: String,
+    mobileMediaUrl: String,
+    mobileMediaPublicId: String,
   },
   about: {
     title: String,
@@ -98,6 +104,8 @@ const PortfolioContentSchema = new Schema({
   footer: {
     mediaUrl: String,
     mediaPublicId: String,
+    mobileMediaUrl: String,
+    mobileMediaPublicId: String,
   },
   socials: {
     instagram: { type: String, default: "https://instagram.com" }

@@ -251,6 +251,9 @@ export default function AdminDashboard() {
     if (targetKey === 'mediaUrl' && 'mediaPublicId' in current) {
        current['mediaPublicId'] = publicId;
     }
+    if (targetKey === 'mobileMediaUrl' && 'mobileMediaPublicId' in current) {
+       current['mobileMediaPublicId'] = publicId;
+    }
     // If inside an array object (like works.mediaList[idx].url)
     if (targetKey === 'url' && 'publicId' in current) {
       current['publicId'] = publicId;
@@ -374,16 +377,36 @@ export default function AdminDashboard() {
                   </label>
                   <div className="pt-6 border-t border-zinc-800">
                     <span className="text-zinc-400 font-medium block mb-4">Background Media</span>
-                    <div className="flex flex-col sm:flex-row gap-6 items-start sm:items-center">
-                      <div className="w-40 h-40 rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-800 relative group cursor-pointer" onClick={() => openUploader(['hero', 'mediaUrl'], content.hero.mediaPublicId)}>
-                        {content.hero.mediaUrl?.match(/\.(mp4|webm|ogg)$/i) 
-                          ? <video src={content.hero.mediaUrl} className="w-full h-full object-cover" autoPlay muted loop />
-                          : <img src={content.hero.mediaUrl} className="w-full h-full object-cover" alt="Hero Media" />
-                        }
-                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition flex items-center justify-center"><Upload size={24}/></div>
+                    
+                    <div className="flex flex-col gap-8">
+                      {/* Desktop */}
+                      <div className="flex flex-col sm:flex-row gap-6 items-start sm:items-center">
+                        <div className="w-40 h-40 rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-800 relative group cursor-pointer shrink-0" onClick={() => openUploader(['hero', 'mediaUrl'], content.hero.mediaPublicId)}>
+                          {content.hero.mediaUrl?.match(/\.(mp4|webm|ogg)$/i) 
+                            ? <video src={content.hero.mediaUrl} className="w-full h-full object-cover" autoPlay muted loop />
+                            : <img src={content.hero.mediaUrl} className="w-full h-full object-cover" alt="Hero Media" />
+                          }
+                          <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition flex items-center justify-center"><Upload size={24}/></div>
+                        </div>
+                        <div className="flex-1 space-y-2">
+                          <h4 className="text-white font-bold tracking-wide">Desktop Background</h4>
+                          <p className="text-sm text-zinc-500">Click the thumbnail to upload a new video or image, or paste a URL for the desktop layout.</p>
+                        </div>
                       </div>
-                      <div className="flex-1 space-y-2">
-                        <p className="text-sm text-zinc-500">Click the media thumbnail to upload a new video or image, or paste a direct URL. This replaces the entire background.</p>
+
+                      {/* Mobile */}
+                      <div className="flex flex-col sm:flex-row gap-6 items-start sm:items-center">
+                        <div className="w-24 h-40 rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-800 relative group cursor-pointer shrink-0" onClick={() => openUploader(['hero', 'mobileMediaUrl'], content.hero.mobileMediaPublicId)}>
+                          {content.hero.mobileMediaUrl?.match(/\.(mp4|webm|ogg)$/i) 
+                            ? <video src={content.hero.mobileMediaUrl} className="w-full h-full object-cover" autoPlay muted loop />
+                            : <img src={content.hero.mobileMediaUrl || content.hero.mediaUrl} className="w-full h-full object-cover" alt="Hero Mobile Media" />
+                          }
+                          <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition flex items-center justify-center"><Upload size={24}/></div>
+                        </div>
+                        <div className="flex-1 space-y-2">
+                          <h4 className="text-white font-bold tracking-wide">Mobile Background</h4>
+                          <p className="text-sm text-zinc-500">Upload a separate portrait-ratio media for mobile devices to fix ratio issues.</p>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -606,16 +629,36 @@ export default function AdminDashboard() {
               <div className="space-y-6">
                 <div className="bg-zinc-900/50 p-6 md:p-8 rounded-3xl border border-zinc-800">
                   <span className="text-zinc-400 font-medium block mb-4">Background Media</span>
-                  <div className="flex flex-col sm:flex-row gap-6 items-start sm:items-center">
-                    <div className="w-full sm:w-64 aspect-video rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-800 relative group cursor-pointer" onClick={() => openUploader(['footer', 'mediaUrl'], content.footer.mediaPublicId)}>
-                      {content.footer.mediaUrl?.match(/\.(mp4|webm|ogg)$/i) 
-                        ? <video src={content.footer.mediaUrl} className="w-full h-full object-cover" autoPlay muted loop />
-                        : <img src={content.footer.mediaUrl} className="w-full h-full object-cover" alt="Footer Media" />
-                      }
-                      <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition flex items-center justify-center"><Upload size={24}/></div>
+                  
+                  <div className="flex flex-col gap-8">
+                    {/* Desktop */}
+                    <div className="flex flex-col sm:flex-row gap-6 items-start sm:items-center">
+                      <div className="w-full sm:w-64 aspect-video rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-800 relative group cursor-pointer shrink-0" onClick={() => openUploader(['footer', 'mediaUrl'], content.footer.mediaPublicId)}>
+                        {content.footer.mediaUrl?.match(/\.(mp4|webm|ogg)$/i) 
+                          ? <video src={content.footer.mediaUrl} className="w-full h-full object-cover" autoPlay muted loop />
+                          : <img src={content.footer.mediaUrl} className="w-full h-full object-cover" alt="Footer Media" />
+                        }
+                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition flex items-center justify-center"><Upload size={24}/></div>
+                      </div>
+                      <div className="flex-1 space-y-2">
+                        <h4 className="text-white font-bold tracking-wide">Desktop Background</h4>
+                        <p className="text-sm text-zinc-500">Upload a landscape video/image for the desktop footer background.</p>
+                      </div>
                     </div>
-                    <div className="flex-1 space-y-2">
-                      <p className="text-sm text-zinc-500">Click the media thumbnail to upload a new video or image, or paste a direct URL. This replaces the contact footer background.</p>
+
+                    {/* Mobile */}
+                    <div className="flex flex-col sm:flex-row gap-6 items-start sm:items-center">
+                      <div className="w-24 h-40 rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-800 relative group cursor-pointer shrink-0" onClick={() => openUploader(['footer', 'mobileMediaUrl'], content.footer.mobileMediaPublicId)}>
+                        {content.footer.mobileMediaUrl?.match(/\.(mp4|webm|ogg)$/i) 
+                          ? <video src={content.footer.mobileMediaUrl} className="w-full h-full object-cover" autoPlay muted loop />
+                          : <img src={content.footer.mobileMediaUrl || content.footer.mediaUrl} className="w-full h-full object-cover" alt="Footer Mobile Media" />
+                        }
+                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition flex items-center justify-center"><Upload size={24}/></div>
+                      </div>
+                      <div className="flex-1 space-y-2">
+                        <h4 className="text-white font-bold tracking-wide">Mobile Background</h4>
+                        <p className="text-sm text-zinc-500">Upload a portrait video/image for the mobile footer background.</p>
+                      </div>
                     </div>
                   </div>
                 </div>

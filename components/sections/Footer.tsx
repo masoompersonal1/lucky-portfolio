@@ -4,12 +4,18 @@ import Link from 'next/link'
 export interface FooterProps {
   data?: {
     mediaUrl?: string;
+    mediaPublicId?: string;
+    mobileMediaUrl?: string;
+    mobileMediaPublicId?: string;
   }
 }
 
 export default function Footer({ data }: FooterProps) {
   const mediaUrl = data?.mediaUrl || "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=1600&grayscale=true"
   const isVideo = mediaUrl.match(/\.(mp4|webm|ogg)$/i)
+  
+  const mobileMediaUrl = data?.mobileMediaUrl || mediaUrl
+  const isMobileVideo = mobileMediaUrl.match(/\.(mp4|webm|ogg)$/i)
 
   return (
     <footer id="contact" className="relative w-full min-h-[50vh] md:min-h-[70vh] bg-black overflow-hidden flex flex-col justify-end">
@@ -20,20 +26,41 @@ export default function Footer({ data }: FooterProps) {
         Because it fills the footer, it acts as the background for the bottom half AND shows through the text!
       */}
       <div className="absolute inset-0 z-0 pointer-events-none">
-        {isVideo ? (
-          <video 
-            src={mediaUrl}
-            className="w-full h-full object-cover object-center md:object-bottom grayscale"
-            autoPlay muted loop playsInline
-          />
-        ) : (
-          <Image 
-            src={mediaUrl} 
-            alt="Contact Background" 
-            fill 
-            className="object-cover object-center md:object-bottom grayscale"
-          />
-        )}
+        {/* Desktop Media */}
+        <div className="hidden md:block w-full h-full absolute inset-0">
+          {isVideo ? (
+            <video 
+              src={mediaUrl}
+              className="w-full h-full object-cover object-center md:object-bottom grayscale"
+              autoPlay muted loop playsInline
+            />
+          ) : (
+            <Image 
+              src={mediaUrl} 
+              alt="Contact Background" 
+              fill 
+              className="object-cover object-center md:object-bottom grayscale"
+            />
+          )}
+        </div>
+
+        {/* Mobile Media */}
+        <div className="block md:hidden w-full h-full absolute inset-0">
+          {isMobileVideo ? (
+            <video 
+              src={mobileMediaUrl}
+              className="w-full h-full object-cover object-center grayscale"
+              autoPlay muted loop playsInline
+            />
+          ) : (
+            <Image 
+              src={mobileMediaUrl} 
+              alt="Contact Background Mobile" 
+              fill 
+              className="object-cover object-center grayscale"
+            />
+          )}
+        </div>
       </div>
 
       {/* 

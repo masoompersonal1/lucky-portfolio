@@ -11,6 +11,8 @@ export interface HeroProps {
     signatureSubtext?: string;
     mediaUrl?: string;
     mediaPublicId?: string;
+    mobileMediaUrl?: string;
+    mobileMediaPublicId?: string;
   }
 }
 
@@ -22,6 +24,9 @@ export default function Hero({ data }: HeroProps) {
   const signatureSubtextLines = (data?.signatureSubtext || "SCROLL\nMORE").split('\n')
   const mediaUrl = data?.mediaUrl || "/hero.jpeg"
   const isVideo = mediaUrl.match(/\.(mp4|webm|ogg)$/i)
+  
+  const mobileMediaUrl = data?.mobileMediaUrl || mediaUrl
+  const isMobileVideo = mobileMediaUrl.match(/\.(mp4|webm|ogg)$/i)
 
   return (
     <section 
@@ -46,21 +51,43 @@ export default function Hero({ data }: HeroProps) {
           transition={{ duration: 1.2, ease: "easeOut" }}
           className="relative w-full h-full"
         >
-          {isVideo ? (
-            <video 
-              src={mediaUrl}
-              className="w-full h-full object-cover object-top grayscale brightness-50 contrast-125"
-              autoPlay muted loop playsInline
-            />
-          ) : (
-            <Image 
-              src={mediaUrl} 
-              alt="Hero Portrait" 
-              fill 
-              className="object-cover object-top grayscale brightness-50 contrast-125"
-              priority
-            />
-          )}
+          {/* Desktop Media */}
+          <div className="hidden md:block w-full h-full absolute inset-0">
+            {isVideo ? (
+              <video 
+                src={mediaUrl}
+                className="w-full h-full object-cover object-top grayscale brightness-50 contrast-125"
+                autoPlay muted loop playsInline
+              />
+            ) : (
+              <Image 
+                src={mediaUrl} 
+                alt="Hero Portrait" 
+                fill 
+                className="object-cover object-top grayscale brightness-50 contrast-125"
+                priority
+              />
+            )}
+          </div>
+          
+          {/* Mobile Media */}
+          <div className="block md:hidden w-full h-full absolute inset-0">
+            {isMobileVideo ? (
+              <video 
+                src={mobileMediaUrl}
+                className="w-full h-full object-cover object-top grayscale brightness-50 contrast-125"
+                autoPlay muted loop playsInline
+              />
+            ) : (
+              <Image 
+                src={mobileMediaUrl} 
+                alt="Hero Portrait Mobile" 
+                fill 
+                className="object-cover object-top grayscale brightness-50 contrast-125"
+                priority
+              />
+            )}
+          </div>
         </motion.div>
       </div>
 
