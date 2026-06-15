@@ -171,6 +171,20 @@ export default function AdminDashboard() {
     } else {
       setLoading(false);
     }
+
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      // Standard way to show native confirmation dialog when closing/reloading tab
+      e.preventDefault();
+      e.returnValue = '';
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      // Destroy the session so if they navigate back/forward, they must log in again
+      sessionStorage.removeItem('admin_auth');
+    };
   }, []);
 
   const fetchContent = async () => {
