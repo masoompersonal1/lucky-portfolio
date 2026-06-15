@@ -23,7 +23,7 @@ export default function Footer({ data }: FooterProps) {
         {isVideo ? (
           <video 
             src={mediaUrl}
-            className="w-full h-full object-cover object-center md:object-bottom"
+            className="w-full h-full object-cover object-center md:object-bottom grayscale"
             autoPlay muted loop playsInline
           />
         ) : (
@@ -31,7 +31,7 @@ export default function Footer({ data }: FooterProps) {
             src={mediaUrl} 
             alt="Contact Background" 
             fill 
-            className="object-cover object-center md:object-bottom"
+            className="object-cover object-center md:object-bottom grayscale"
           />
         )}
       </div>
