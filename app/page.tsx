@@ -52,7 +52,9 @@ export default async function Home() {
         {/* Footer Section */}
         <Footer data={data.footer} socials={data.socials} />
 
-        <FloatingInstagram link={data.socials?.instagram} />
+        {data.socials?.enableInstagram !== false && (
+          <FloatingInstagram link={data.socials?.instagram} />
+        )}
         {data.socials?.enableWhatsapp !== false && (
           <FloatingWhatsapp link={data.socials?.whatsapp} />
         )}

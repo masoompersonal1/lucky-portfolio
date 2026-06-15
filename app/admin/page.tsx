@@ -724,6 +724,23 @@ export default function AdminDashboard() {
                           <input 
                             type="checkbox" 
                             className="sr-only" 
+                            checked={content.socials?.enableInstagram !== false}
+                            onChange={e => updateNestedField(['socials', 'enableInstagram'], e.target.checked)}
+                          />
+                          <div className={`block w-14 h-8 rounded-full transition-colors ${content.socials?.enableInstagram !== false ? 'bg-[#cc0000]' : 'bg-zinc-700'}`}></div>
+                          <div className={`absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition-transform ${content.socials?.enableInstagram !== false ? 'translate-x-6' : ''}`}></div>
+                        </div>
+                        <div>
+                          <span className="text-white font-medium block">Enable Instagram Floating Button & Card</span>
+                          <span className="text-zinc-500 text-sm">Toggle visibility of the Instagram elements globally.</span>
+                        </div>
+                      </label>
+
+                      <label className="flex items-center gap-4 cursor-pointer mt-4 p-4 bg-zinc-950 rounded-xl border border-zinc-800">
+                        <div className="relative">
+                          <input 
+                            type="checkbox" 
+                            className="sr-only" 
                             checked={content.socials?.enableWhatsapp !== false}
                             onChange={e => updateNestedField(['socials', 'enableWhatsapp'], e.target.checked)}
                           />
@@ -731,8 +748,8 @@ export default function AdminDashboard() {
                           <div className={`absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition-transform ${content.socials?.enableWhatsapp !== false ? 'translate-x-6' : ''}`}></div>
                         </div>
                         <div>
-                          <span className="text-white font-medium block">Enable Floating WhatsApp Button</span>
-                          <span className="text-zinc-500 text-sm">Toggle visibility of the WhatsApp icon on the landing page.</span>
+                          <span className="text-white font-medium block">Enable Floating WhatsApp Button & Card</span>
+                          <span className="text-zinc-500 text-sm">Toggle visibility of the WhatsApp elements globally.</span>
                         </div>
                       </label>
                     </div>
