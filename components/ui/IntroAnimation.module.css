@@ -262,15 +262,18 @@
   padding: 15px 15px 50px 15px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
   z-index: 1;
-  transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  /* Make the extraction from camera much slower (2.5s) */
+  transition: transform 2.5s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 /* The element that zooms into the full screen */
 .filmSlot.zooming {
-  transition: all 1.2s cubic-bezier(0.25, 1, 0.5, 1);
-  transform: translateX(-50%) translate(0, -50vh) scale(15);
+  /* Zoom rapidly, expanding the image past viewport boundaries */
+  transition: all 1.5s cubic-bezier(0.65, 0, 0.35, 1);
+  /* The padding will fly off screen leaving only the inner image filling the viewport */
+  transform: translateX(-50%) translate(0, -200px) scale(20);
   z-index: 9999;
-  opacity: 0; /* Fades out completely to reveal site below */
+  opacity: 0; /* Fades out completely right at the end to reveal site below */
 }
 
 .filmImage {
@@ -310,12 +313,14 @@
 }
 
 .shutterInput:checked ~ .filmSlot {
-  transform: translate(-50%, 220px) rotate(-2deg);
+  /* Drops only 160px so the top part stays "inside" or attached to the camera lip */
+  transform: translate(-50%, 160px) rotate(-1deg);
   z-index: 5;
 }
 .shutterInput:checked ~ .filmSlot .filmContent {
+  /* Development of polaroid takes 4s, starts after the slow drop finishes */
   animation: develop 4s ease-in forwards;
-  animation-delay: 0.6s;
+  animation-delay: 2.5s;
 }
 
 @keyframes develop {

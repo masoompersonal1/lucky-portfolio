@@ -18,17 +18,17 @@ export default function IntroAnimation({ onComplete }: { onComplete: () => void 
       }
     }, 500);
 
-    // 2. The photo drops and "develops" (takes about 4.6s)
+    // 2. The photo drops (2.5s) and "develops" (4s) -> Total 6.5s
     // After it develops, we trigger the zooming scale effect
     const zoomTimer = setTimeout(() => {
       setZooming(true);
-    }, 5500);
+    }, 7000); // 500 + 6500
 
-    // 3. After the zoom effect finishes (1.2s), we unmount
+    // 3. After the zoom effect finishes (1.5s), we unmount
     const unmountTimer = setTimeout(() => {
       document.body.style.overflow = '';
       onComplete();
-    }, 6700);
+    }, 8500); // 7000 + 1500
 
     return () => {
       clearTimeout(snapTimer);
