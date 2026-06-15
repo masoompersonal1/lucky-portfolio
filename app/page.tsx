@@ -5,6 +5,7 @@ import Works from "@/components/sections/Works";
 import Services from "@/components/sections/Services";
 import Exhibitions from "@/components/sections/Exhibitions";
 import Footer from "@/components/sections/Footer";
+import FloatingInstagram from "@/components/FloatingInstagram";
 import connectToDatabase from "@/lib/mongodb";
 import { PortfolioContent } from "@/lib/models";
 import ClientAppWrapper from "@/components/ClientAppWrapper";
@@ -48,6 +49,8 @@ export default async function Home() {
 
         {/* Footer Section */}
         <Footer data={data.footer} />
+
+        <FloatingInstagram link={data.socials?.instagram} />
       </main>
     </ClientAppWrapper>
   );

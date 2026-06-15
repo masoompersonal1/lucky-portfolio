@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
 import Link from 'next/link'
@@ -9,13 +9,31 @@ import Link from 'next/link'
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
   const router = useRouter()
+  const pathname = usePathname()
 
   const links = [
     { name: 'ABOUT ME', href: '#about' },
     { name: 'MY WORKS', href: '#works' },
     { name: 'MY SERVICES', href: '#services' },
-    { name: 'CONTACT ME', href: '#contact' },
+    { name: 'CONTACT', href: '/contact' },
   ]
+
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (href.startsWith('#')) {
+      e.preventDefault()
+      setIsOpen(false)
+      if (pathname !== '/') {
+        router.push('/' + href)
+        return
+      }
+      const el = document.querySelector(href)
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' })
+      }
+    } else {
+      setIsOpen(false)
+    }
+  }
 
   return (
     <nav className="absolute top-0 left-0 w-full z-50 py-8 px-8 md:px-16 flex justify-between items-center bg-transparent">
@@ -28,18 +46,16 @@ export default function Navbar() {
 
       {/* Desktop Menu - Right aligned */}
       <div className="hidden md:flex gap-24 items-center pr-12">
-        <Link href="#about" className="text-sm font-bold tracking-[0.2em] text-white hover:text-[#cc0000] transition-colors relative group">
-          ABOUT ME
-        </Link>
-        <Link href="#works" className="text-sm font-bold tracking-[0.2em] text-white hover:text-[#cc0000] transition-colors relative group">
-          MY WORKS
-        </Link>
-        <Link href="#services" className="text-sm font-bold tracking-[0.2em] text-white hover:text-[#cc0000] transition-colors relative group">
-          MY SERVICES
-        </Link>
-        <Link href="#contact" className="text-sm font-bold tracking-[0.2em] text-white hover:text-[#cc0000] transition-colors relative group">
-          CONTACT
-        </Link>
+        {links.map((link) => (
+          <Link 
+            key={link.name}
+            href={link.href} 
+            onClick={(e) => handleNavClick(e, link.href)}
+            className="text-sm font-bold tracking-[0.2em] text-white hover:text-[#cc0000] transition-colors relative group"
+          >
+            {link.name}
+          </Link>
+        ))}
       </div>
 
       {/* Mobile Menu Toggle */}
@@ -65,7 +81,7 @@ export default function Navbar() {
                 <li key={link.name}>
                   <Link 
                     href={link.href} 
-                    onClick={() => setIsOpen(false)}
+                    onClick={(e) => handleNavClick(e, link.href)}
                     className="hover:text-white transition-colors block py-2"
                   >
                     {link.name}

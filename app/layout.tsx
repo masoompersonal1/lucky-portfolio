@@ -51,6 +51,8 @@ export const metadata: Metadata = {
   },
 };
 
+import AntiInspect from "@/components/AntiInspect";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -61,7 +63,8 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${anton.variable} ${signatureFont.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col font-sans bg-[#c0c0c0] text-black">
+      <body className="min-h-full flex flex-col font-sans bg-[#c0c0c0] text-black select-none pointer-events-auto">
+        <AntiInspect />
         {children}
       </body>
     </html>

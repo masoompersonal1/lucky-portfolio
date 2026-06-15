@@ -12,7 +12,7 @@ export default function Footer({ data }: FooterProps) {
   const isVideo = mediaUrl.match(/\.(mp4|webm|ogg)$/i)
 
   return (
-    <footer id="contact" className="relative w-full min-h-[50vh] md:min-h-screen bg-black overflow-hidden flex flex-col justify-end">
+    <footer id="contact" className="relative w-full min-h-[50vh] md:min-h-[70vh] bg-black overflow-hidden flex flex-col justify-end">
       
       {/* 
         LAYER 1: The Wide Angled Image 

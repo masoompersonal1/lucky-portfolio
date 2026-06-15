@@ -32,7 +32,9 @@ export interface IPortfolioContent extends Document {
     year: string;
     title: string;
     description: string;
-    mediaList: { url: string; publicId: string }[];
+    grids: {
+      mediaList: { url: string; publicId: string }[];
+    }[];
   };
   services: {
     description: string;
@@ -56,6 +58,9 @@ export interface IPortfolioContent extends Document {
     mediaUrl: string;
     mediaPublicId: string;
   };
+  socials: {
+    instagram: string;
+  };
 }
 
 const PortfolioContentSchema = new Schema({
@@ -76,7 +81,9 @@ const PortfolioContentSchema = new Schema({
     year: String,
     title: String,
     description: String,
-    mediaList: [{ url: String, publicId: String }],
+    grids: [{
+      mediaList: [{ url: String, publicId: String }]
+    }],
   },
   services: {
     description: String,
@@ -92,6 +99,9 @@ const PortfolioContentSchema = new Schema({
     mediaUrl: String,
     mediaPublicId: String,
   },
+  socials: {
+    instagram: { type: String, default: "https://instagram.com" }
+  }
 });
 
 export const Admin = mongoose.models.Admin || mongoose.model<IAdmin>('Admin', AdminSchema);

@@ -162,9 +162,10 @@ export default function AdminDashboard() {
 
   // Uploader State
   const [uploadState, setUploadState] = useState<{isOpen: boolean, path: string[], oldPid: string}>({ isOpen: false, path: [], oldPid: '' });
+  const [currentAdminGridIndex, setCurrentAdminGridIndex] = useState(0);
 
   useEffect(() => {
-    if (localStorage.getItem('admin_auth') === 'true') {
+    if (sessionStorage.getItem('admin_auth') === 'true') {
       setIsAuthenticated(true);
       fetchContent();
     } else {
@@ -191,7 +192,7 @@ export default function AdminDashboard() {
         body: JSON.stringify({ username: loginUser, password: loginPass })
       });
       if (res.ok) {
-        localStorage.setItem('admin_auth', 'true');
+        sessionStorage.setItem('admin_auth', 'true');
         setIsAuthenticated(true);
         fetchContent();
       } else {
@@ -203,7 +204,7 @@ export default function AdminDashboard() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('admin_auth');
+    sessionStorage.removeItem('admin_auth');
     setIsAuthenticated(false);
     setContent(null);
     setShowLogoutConfirm(false);
@@ -409,11 +410,41 @@ export default function AdminDashboard() {
                   </label>
                   
                   <div className="pt-6 border-t border-zinc-800">
-                    <div className="flex justify-between items-center mb-6">
-                      <span className="text-zinc-300 font-medium">Bento Grid Media Editor</span>
-                      <span className="text-xs text-zinc-500 font-medium uppercase tracking-widest bg-zinc-900 px-3 py-1 rounded-full">WYSIWYG</span>
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                      <div>
+                        <span className="text-zinc-300 font-medium mr-3">Bento Grid Media Editor</span>
+                        <span className="text-xs text-zinc-500 font-medium uppercase tracking-widest bg-zinc-900 px-3 py-1 rounded-full">WYSIWYG</span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <button 
+                          onClick={() => setCurrentAdminGridIndex(Math.max(0, currentAdminGridIndex - 1))}
+                          disabled={currentAdminGridIndex === 0}
+                          className="p-2 bg-zinc-900 rounded-lg hover:bg-zinc-800 disabled:opacity-50"
+                        >
+                          <ArrowLeft size={16} />
+                        </button>
+                        <span className="text-sm font-medium">Grid {currentAdminGridIndex + 1} of {content.works.grids?.length || 1}</span>
+                        <button 
+                          onClick={() => setCurrentAdminGridIndex(Math.min((content.works.grids?.length || 1) - 1, currentAdminGridIndex + 1))}
+                          disabled={currentAdminGridIndex >= (content.works.grids?.length || 1) - 1}
+                          className="p-2 bg-zinc-900 rounded-lg hover:bg-zinc-800 disabled:opacity-50"
+                        >
+                          <ArrowRight size={16} />
+                        </button>
+                        <button 
+                          onClick={() => {
+                            const newGrids = [...(content.works.grids || [])];
+                            newGrids.push({ mediaList: [] });
+                            updateNestedField(['works', 'grids'], newGrids);
+                            setCurrentAdminGridIndex(newGrids.length - 1);
+                          }}
+                          className="text-xs bg-white text-black px-3 py-2 rounded-lg font-bold hover:bg-zinc-200 ml-2"
+                        >
+                          + Add Grid
+                        </button>
+                      </div>
                     </div>
-                    <p className="text-sm text-zinc-500 mb-6">Click any block in the grid to change its media. The layout perfectly matches the live website.</p>
+                    <p className="text-sm text-zinc-500 mb-6">Click any block in the grid to change its media. Use the arrows to paginate through different grids.</p>
                     
                     {/* BENTO GRID REPLICA */}
                     <div className="grid grid-cols-3 gap-2 w-full max-w-[800px] mx-auto p-4 bg-zinc-950 rounded-2xl border border-zinc-900">
@@ -427,24 +458,24 @@ export default function AdminDashboard() {
                         { col: 'col-span-1', aspect: 'aspect-square' }, // 6: Tower
                         { col: 'col-span-2', aspect: 'aspect-[2/1]' }  // 7: Wide Silhouette
                       ].map((cell, idx) => {
-                        // We must ensure content.works.mediaList has at least 8 items
-                        const media = content.works.mediaList[idx] || { url: '', publicId: '' };
+                        const currentGrid = content.works.grids?.[currentAdminGridIndex] || { mediaList: [] };
+                        const media = currentGrid.mediaList?.[idx] || { url: '', publicId: '' };
                         const isVideo = media.url?.match(/\.(mp4|webm|ogg)$/i);
                         
                         return (
                           <div 
                             key={idx} 
-                            onClick={() => openUploader(['works', 'mediaList', idx, 'url'], media.publicId)}
+                            onClick={() => openUploader(['works', 'grids', currentAdminGridIndex, 'mediaList', idx, 'url'], media.publicId)}
                             className={`${cell.col} relative ${cell.aspect} ${cell.special ? 'bg-[#cc0000]' : 'bg-zinc-900'} overflow-hidden group cursor-pointer border border-zinc-800`}
                           >
                             {cell.special ? (
-                               <div className="absolute w-[125%] h-[125%] -left-[15%] -top-[20%] -rotate-[12deg] z-20 border-[3px] border-white shadow-2xl bg-black overflow-hidden group-hover:scale-105 transition-transform">
-                                {isVideo ? <video src={media.url} className="w-full h-full object-cover grayscale" autoPlay muted loop /> : <img src={media.url} className="w-full h-full object-cover grayscale" />}
+                               <div className="absolute w-[125%] h-[125%] -left-[15%] -top-[20%] -rotate-[12deg] z-20 border-[3px] md:border-4 border-white shadow-2xl bg-black overflow-hidden group-hover:scale-105 transition-transform">
+                                {isVideo ? <video src={media.url} className="w-full h-full object-cover grayscale" autoPlay muted loop /> : (media.url ? <img src={media.url} className="w-full h-full object-cover grayscale" /> : <div className="w-full h-full bg-black"></div>)}
                                 <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity"><Upload size={24} className="text-white"/></div>
                                </div>
                             ) : (
                               <>
-                                {isVideo ? <video src={media.url} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" autoPlay muted loop /> : <img src={media.url} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />}
+                                {isVideo ? <video src={media.url} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" autoPlay muted loop /> : (media.url ? <img src={media.url} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" /> : <div className="w-full h-full bg-black"></div>)}
                                 <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity z-30"><Upload size={24} className="text-white"/></div>
                               </>
                             )}
@@ -588,6 +619,18 @@ export default function AdminDashboard() {
                     </div>
                   </div>
                 </div>
+
+                <div className="bg-zinc-900/50 p-6 md:p-8 rounded-3xl border border-zinc-800">
+                  <label className="block text-zinc-400 font-medium mb-2">Instagram Link</label>
+                  <p className="text-sm text-zinc-500 mb-4">This controls where the floating Instagram icon redirects users.</p>
+                  <input 
+                    type="text" 
+                    value={content.socials?.instagram || ''} 
+                    onChange={e => updateNestedField(['socials', 'instagram'], e.target.value)}
+                    className="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-4 text-white focus:outline-none focus:border-zinc-600"
+                    placeholder="https://instagram.com/yourprofile"
+                  />
+                </div>
               </div>
             )}
 
@@ -596,6 +639,7 @@ export default function AdminDashboard() {
             )}
 
           </div>
+        </div>
       </div>
 
       <UploadModal 
@@ -641,7 +685,7 @@ function CredentialUpdateForm({ setToastMsg }: { setToastMsg: (msg: string) => v
       if (res.ok) {
         setToastMsg('Credentials updated! Please re-login.');
         setTimeout(() => {
-          localStorage.removeItem('admin_auth');
+          sessionStorage.removeItem('admin_auth');
           window.location.reload();
         }, 2000);
       } else {

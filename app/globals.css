@@ -29,3 +29,11 @@ body {
   -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
 }
 
+/* Anti-theft CSS */
+img, video {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-select: none;
+}
