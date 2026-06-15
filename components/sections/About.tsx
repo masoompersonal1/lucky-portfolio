@@ -107,24 +107,26 @@ export default function About({ data }: AboutProps) {
                   animate={animate}
                   exit={exit}
                   transition={{ type: "spring", stiffness: 200, damping: 20 }}
-                  className="absolute inset-0 bg-white shadow-2xl overflow-hidden"
+                  className="absolute inset-0 bg-white border-[3px] md:border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_#cc0000] transition-shadow duration-300 p-[5%] pb-[15%]"
                   style={{ zIndex }}
                 >
-                  {img.match(/\.(mp4|webm|ogg)$/i) ? (
-                    <video 
-                      src={img} 
-                      className="w-full h-full object-cover" 
-                      autoPlay muted loop playsInline 
-                    />
-                  ) : (
-                    <Image
-                      src={img}
-                      alt={`Gallery image ${index + 1}`}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 768px) 100vw, 400px"
-                    />
-                  )}
+                  <div className="relative w-full h-full border-[3px] md:border-4 border-black bg-zinc-200 overflow-hidden">
+                    {img.match(/\.(mp4|webm|ogg)$/i) ? (
+                      <video 
+                        src={img} 
+                        className="w-full h-full object-cover" 
+                        autoPlay muted loop playsInline 
+                      />
+                    ) : (
+                      <Image
+                        src={img}
+                        alt={`Gallery image ${index + 1}`}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw, 400px"
+                      />
+                    )}
+                  </div>
                 </motion.div>
               )
             })}
