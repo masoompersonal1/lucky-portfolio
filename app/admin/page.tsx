@@ -322,7 +322,7 @@ export default function AdminDashboard() {
         {(mobileMenuOpen || typeof window !== 'undefined' && window.innerWidth >= 768) && (
           <motion.div 
             initial={{ x: -300 }} animate={{ x: 0 }} exit={{ x: -300 }} transition={{ type: "spring", bounce: 0, duration: 0.4 }}
-            className={`fixed md:relative top-[73px] md:top-0 left-0 h-[calc(100dvh-73px)] md:h-[100dvh] w-64 bg-zinc-950/90 md:bg-zinc-950 border-r border-zinc-900 p-6 flex flex-col space-y-2 z-40 backdrop-blur-xl md:backdrop-blur-none`}
+            className={`fixed md:sticky top-[73px] md:top-0 left-0 h-[calc(100dvh-73px)] md:h-[100dvh] w-64 shrink-0 bg-zinc-950/90 md:bg-zinc-950 border-r border-zinc-900 p-6 flex flex-col space-y-2 z-40 backdrop-blur-xl md:backdrop-blur-none`}
           >
             <h1 className="hidden md:block text-2xl font-black tracking-tighter mb-8 px-4 text-zinc-100">Prince.</h1>
             <div className="flex-1 overflow-y-auto space-y-1 pr-2">
