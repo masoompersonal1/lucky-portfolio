@@ -19,10 +19,10 @@ export interface FooterProps {
 
 export default function Footer({ data, socials }: FooterProps) {
   const mediaUrl = data?.mediaUrl || "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=1600&grayscale=true"
-  const isVideo = mediaUrl.match(/\.(mp4|webm|ogg)$/i)
+  const isVideo = mediaUrl.match(/(\/video\/upload\/|\.(mp4|webm|ogg|mov|avi|mkv|qt)$)/i)
   
   const mobileMediaUrl = data?.mobileMediaUrl || mediaUrl
-  const isMobileVideo = mobileMediaUrl.match(/\.(mp4|webm|ogg)$/i)
+  const isMobileVideo = mobileMediaUrl.match(/(\/video\/upload\/|\.(mp4|webm|ogg|mov|avi|mkv|qt)$)/i)
 
   return (
     <footer id="contact" className="relative w-full min-h-[50vh] md:min-h-[70vh] bg-black overflow-hidden flex flex-col justify-end">

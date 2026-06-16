@@ -148,7 +148,8 @@ function UploadModal({ isOpen, onClose, onSave, oldPublicId }: any) {
                   disabled={loading || (tab === 'file' ? !file : !url)}
                   className="flex-1 py-3 rounded-xl bg-white text-black hover:bg-zinc-200 font-bold transition flex justify-center items-center disabled:opacity-50"
                 >
-                  {loading ? <Loader2 className="animate-spin" size={20} /> : "Save Media"}
+                  {loading ? <Loader2 className="animate-spin mr-2" size={20} /> : null}
+                  {loading ? (file?.type.startsWith('video') ? "Uploading Video (This takes time)..." : "Uploading...") : "Save Media"}
                 </button>
               </div>
             </div>
@@ -429,7 +430,7 @@ export default function AdminDashboard() {
                       {/* Desktop */}
                       <div className="flex flex-col sm:flex-row gap-6 items-start sm:items-center">
                         <div className="w-40 h-40 rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-800 relative group cursor-pointer shrink-0" onClick={() => openUploader(['hero', 'mediaUrl'], content.hero.mediaPublicId)}>
-                          {content.hero.mediaUrl?.match(/\.(mp4|webm|ogg)$/i) 
+                          {content.hero.mediaUrl?.match(/(\/video\/upload\/|\.(mp4|webm|ogg|mov|avi|mkv|qt)$)/i) 
                             ? <video src={content.hero.mediaUrl} className="w-full h-full object-cover" autoPlay muted loop />
                             : <img src={content.hero.mediaUrl} className="w-full h-full object-cover" alt="Hero Media" />
                           }
@@ -444,7 +445,7 @@ export default function AdminDashboard() {
                       {/* Mobile */}
                       <div className="flex flex-col sm:flex-row gap-6 items-start sm:items-center">
                         <div className="w-24 h-40 rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-800 relative group cursor-pointer shrink-0" onClick={() => openUploader(['hero', 'mobileMediaUrl'], content.hero.mobileMediaPublicId)}>
-                          {content.hero.mobileMediaUrl?.match(/\.(mp4|webm|ogg)$/i) 
+                          {content.hero.mobileMediaUrl?.match(/(\/video\/upload\/|\.(mp4|webm|ogg|mov|avi|mkv|qt)$)/i) 
                             ? <video src={content.hero.mobileMediaUrl} className="w-full h-full object-cover" autoPlay muted loop />
                             : <img src={content.hero.mobileMediaUrl || content.hero.mediaUrl} className="w-full h-full object-cover" alt="Hero Mobile Media" />
                           }
@@ -550,7 +551,7 @@ export default function AdminDashboard() {
                       ].map((cell, idx) => {
                         const currentGrid = content.works.grids?.[currentAdminGridIndex] || { mediaList: [] };
                         const media = currentGrid.mediaList?.[idx] || { url: '', publicId: '' };
-                        const isVideo = media.url?.match(/\.(mp4|webm|ogg)$/i);
+                        const isVideo = media.url?.match(/(\/video\/upload\/|\.(mp4|webm|ogg|mov|avi|mkv|qt)$)/i);
                         
                         return (
                           <div 
@@ -605,7 +606,7 @@ export default function AdminDashboard() {
                   
                   <div className="space-y-4">
                     {content.about.mediaList?.map((item: any, idx: number) => {
-                      const isVideo = item.url?.match(/\.(mp4|webm|ogg)$/i);
+                      const isVideo = item.url?.match(/(\/video\/upload\/|\.(mp4|webm|ogg|mov|avi|mkv|qt)$)/i);
                       return (
                         <div key={idx} className="flex items-center gap-4 bg-zinc-950 p-4 rounded-xl border border-zinc-900">
                           <div 
@@ -661,7 +662,7 @@ export default function AdminDashboard() {
                             className="w-full md:w-32 h-20 bg-zinc-900 rounded-lg overflow-hidden border border-zinc-800 relative group cursor-pointer shrink-0"
                             onClick={() => openUploader(['services', 'list', idx, 'mediaUrl'], item.publicId)}
                           >
-                            {item.mediaUrl?.match(/\.(mp4|webm|ogg)$/i) 
+                            {item.mediaUrl?.match(/(\/video\/upload\/|\.(mp4|webm|ogg|mov|avi|mkv|qt)$)/i) 
                               ? <video src={item.mediaUrl} className="w-full h-full object-cover" autoPlay muted loop />
                               : <img src={item.mediaUrl} className="w-full h-full object-cover" alt={item.title} />
                             }
@@ -727,7 +728,7 @@ export default function AdminDashboard() {
                             className="w-full md:w-48 h-32 bg-zinc-900 rounded-lg overflow-hidden border border-zinc-800 relative group cursor-pointer shrink-0"
                             onClick={() => openUploader(['exhibitions', 'list', idx, 'mediaUrl'], item.publicId)}
                           >
-                            {item.mediaUrl?.match(/\.(mp4|webm|ogg)$/i) 
+                            {item.mediaUrl?.match(/(\/video\/upload\/|\.(mp4|webm|ogg|mov|avi|mkv|qt)$)/i) 
                               ? <video src={item.mediaUrl} className="w-full h-full object-cover" autoPlay muted loop />
                               : <img src={item.mediaUrl} className="w-full h-full object-cover" alt="Exhibition" />
                             }
@@ -756,7 +757,7 @@ export default function AdminDashboard() {
                     {/* Desktop */}
                     <div className="flex flex-col sm:flex-row gap-6 items-start sm:items-center">
                       <div className="w-full sm:w-64 aspect-video rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-800 relative group cursor-pointer shrink-0" onClick={() => openUploader(['footer', 'mediaUrl'], content.footer.mediaPublicId)}>
-                        {content.footer.mediaUrl?.match(/\.(mp4|webm|ogg)$/i) 
+                        {content.footer.mediaUrl?.match(/(\/video\/upload\/|\.(mp4|webm|ogg|mov|avi|mkv|qt)$)/i) 
                           ? <video src={content.footer.mediaUrl} className="w-full h-full object-cover" autoPlay muted loop />
                           : <img src={content.footer.mediaUrl} className="w-full h-full object-cover" alt="Footer Media" />
                         }
@@ -771,7 +772,7 @@ export default function AdminDashboard() {
                     {/* Mobile */}
                     <div className="flex flex-col sm:flex-row gap-6 items-start sm:items-center">
                       <div className="w-24 h-40 rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-800 relative group cursor-pointer shrink-0" onClick={() => openUploader(['footer', 'mobileMediaUrl'], content.footer.mobileMediaPublicId)}>
-                        {content.footer.mobileMediaUrl?.match(/\.(mp4|webm|ogg)$/i) 
+                        {content.footer.mobileMediaUrl?.match(/(\/video\/upload\/|\.(mp4|webm|ogg|mov|avi|mkv|qt)$)/i) 
                           ? <video src={content.footer.mobileMediaUrl} className="w-full h-full object-cover" autoPlay muted loop />
                           : <img src={content.footer.mobileMediaUrl || content.footer.mediaUrl} className="w-full h-full object-cover" alt="Footer Mobile Media" />
                         }

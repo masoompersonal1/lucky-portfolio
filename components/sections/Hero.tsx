@@ -23,10 +23,10 @@ export default function Hero({ data }: HeroProps) {
   const topSubheadingLines = (data?.topSubheading || "AN AWARD-WINNING\nPHOTOGRAPHER WHOSE LENS\nTRANSFORMS MOMENTS INTO\nTIMELESS MASTERPIECES").split('\n')
   const signatureSubtextLines = (data?.signatureSubtext || "SCROLL\nMORE").split('\n')
   const mediaUrl = data?.mediaUrl || "/hero.jpeg"
-  const isVideo = mediaUrl.match(/\.(mp4|webm|ogg)$/i)
+  const isVideo = mediaUrl.match(/(\/video\/upload\/|\.(mp4|webm|ogg|mov|avi|mkv|qt)$)/i)
   
   const mobileMediaUrl = data?.mobileMediaUrl || mediaUrl
-  const isMobileVideo = mobileMediaUrl.match(/\.(mp4|webm|ogg)$/i)
+  const isMobileVideo = mobileMediaUrl.match(/(\/video\/upload\/|\.(mp4|webm|ogg|mov|avi|mkv|qt)$)/i)
 
   return (
     <section 

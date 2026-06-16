@@ -111,7 +111,7 @@ export default function About({ data }: AboutProps) {
                   style={{ zIndex }}
                 >
                   <div className="relative w-full h-full border-[3px] md:border-4 border-black bg-zinc-200 overflow-hidden">
-                    {img.match(/\.(mp4|webm|ogg)$/i) ? (
+                    {img.match(/(\/video\/upload\/|\.(mp4|webm|ogg|mov|avi|mkv|qt)$)/i) ? (
                       <video 
                         src={img} 
                         className="w-full h-full object-cover grayscale" 
