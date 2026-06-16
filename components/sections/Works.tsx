@@ -48,11 +48,12 @@ export default function Works({ data }: WorksProps) {
   const handleNext = () => setCurrentGridIndex(prev => Math.min(totalGrids - 1, prev + 1));
 
   const renderMedia = (src: string, alt: string, sizes: string, className: string) => {
-    const isVideo = src?.match(/(\/video\/upload\/|\.(mp4|webm|ogg|mov|avi|mkv|qt)$)/i);
+    if (!src) return <div className={`w-full h-full bg-zinc-900 ${className.replace('object-cover', '')}`} />;
+    const isVideo = src.match(/(\/video\/upload\/|\.(mp4|webm|ogg|mov|avi|mkv|qt)$)/i);
     if (isVideo) {
       return <video src={src} autoPlay muted loop playsInline className={`w-full h-full object-cover ${className.replace('object-cover', '')}`} />;
     }
-    return <Image src={src || ''} alt={alt} fill sizes={sizes} className={className} />;
+    return <Image src={src} alt={alt} fill sizes={sizes} className={className} />;
   };
 
   return (
