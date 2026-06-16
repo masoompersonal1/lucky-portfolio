@@ -104,7 +104,7 @@ export default function Exhibitions({ data }: ExhibitionsProps) {
             transition={{ duration: 0.5 }}
             className="absolute inset-0"
           >
-            {current.image.match(/(\/video\/upload\/|\.(mp4|webm|ogg|mov|avi|mkv|qt)$)/i) ? (
+            {current.image?.match(/(\/video\/upload\/|\.(mp4|webm|ogg|mov|avi|mkv|qt)$)/i) ? (
               <video 
                 src={current.image} 
                 autoPlay muted loop playsInline 
