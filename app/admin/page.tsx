@@ -64,19 +64,37 @@ function UploadModal({ isOpen, onClose, onSave, oldPublicId }: any) {
     } else {
       if (!file) return;
       setLoading(true);
-      const formData = new FormData();
-      formData.append('file', file);
-      if (oldPublicId) formData.append('oldPublicId', oldPublicId);
       
       try {
-        const res = await fetch('/api/upload', { method: 'POST', body: formData });
-        const data = await res.json();
-        if (res.ok) {
-          onSave(data.url, data.publicId);
+        // 1. Get Signature
+        const sigRes = await fetch('/api/upload');
+        const sigData = await sigRes.json();
+        if (!sigRes.ok) throw new Error("Failed to get signature");
+
+        // 2. Upload directly to Cloudinary bypassing Vercel limits
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('api_key', sigData.apiKey);
+        formData.append('timestamp', sigData.timestamp);
+        formData.append('signature', sigData.signature);
+        formData.append('folder', 'squidwod_portfolio');
+        
+        const uploadRes = await fetch(`https://api.cloudinary.com/v1_1/${sigData.cloudName}/auto/upload`, {
+          method: 'POST',
+          body: formData
+        });
+        const uploadData = await uploadRes.json();
+
+        if (uploadRes.ok) {
+          // 3. Delete old file if exists
+          if (oldPublicId) {
+            fetch(`/api/upload?publicId=${oldPublicId}`, { method: 'DELETE' }).catch(console.error);
+          }
+          
+          onSave(uploadData.secure_url, uploadData.public_id);
           onClose();
         } else {
-          // Toast should handle error but we keep it simple here
-          console.error("Upload failed");
+          console.error("Cloudinary error:", uploadData);
         }
       } catch (e) {
         console.error("Upload error", e);
@@ -240,6 +258,9 @@ export default function AdminDashboard() {
     const newContent = { ...content };
     let current = newContent;
     for (let i = 0; i < path.length - 1; i++) {
+      if (current[path[i]] === undefined) {
+        current[path[i]] = (typeof path[i+1] === 'number') ? [] : {};
+      }
       current = current[path[i]];
     }
     current[path[path.length - 1]] = value;
@@ -254,6 +275,9 @@ export default function AdminDashboard() {
     const newContent = { ...content };
     let current = newContent;
     for (let i = 0; i < uploadState.path.length - 1; i++) {
+      if (current[uploadState.path[i]] === undefined) {
+        current[uploadState.path[i]] = (typeof uploadState.path[i+1] === 'number') ? [] : {};
+      }
       current = current[uploadState.path[i]];
     }
     // Assume path is something like ['hero', 'mediaUrl']
@@ -262,14 +286,14 @@ export default function AdminDashboard() {
     current[targetKey] = url;
     
     // Auto-update publicId sibling if it exists
-    if (targetKey === 'mediaUrl' && 'mediaPublicId' in current) {
+    if (targetKey === 'mediaUrl') {
        current['mediaPublicId'] = publicId;
     }
-    if (targetKey === 'mobileMediaUrl' && 'mobileMediaPublicId' in current) {
+    if (targetKey === 'mobileMediaUrl') {
        current['mobileMediaPublicId'] = publicId;
     }
     // If inside an array object (like works.mediaList[idx].url)
-    if (targetKey === 'url' && 'publicId' in current) {
+    if (targetKey === 'url') {
       current['publicId'] = publicId;
     }
 
