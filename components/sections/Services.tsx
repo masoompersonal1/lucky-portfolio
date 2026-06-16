@@ -25,7 +25,7 @@ export default function Services({ data }: ServicesProps) {
   ]
 
   const services = data?.list && data.list.length > 0 
-    ? data.list.map((s, i) => ({ id: `srv_${i}`, title: s.title, image: s.mediaUrl || defaultServices[i%defaultServices.length].image }))
+    ? data.list.map((s: any, i: number) => ({ id: `srv_${i}`, title: s?.title, image: s?.mediaUrl || defaultServices[i%defaultServices.length].image }))
     : defaultServices.map((s, i) => ({ id: `srv_${i}`, title: s.title, image: s.image }))
 
   return (

@@ -38,9 +38,9 @@ export default function Works({ data }: WorksProps) {
   const currentGridData = data?.grids?.[currentGridIndex]?.mediaList || [];
   
   const gridImages = currentGridData.length >= 8 
-    ? currentGridData.map((m: any) => m.url) 
+    ? currentGridData.map((m: any) => m?.url) 
     : [
-      ...currentGridData.map((m: any) => m.url), 
+      ...currentGridData.map((m: any) => m?.url), 
       ...defaultImages
     ].slice(0, 8)
 

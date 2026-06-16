@@ -606,23 +606,23 @@ export default function AdminDashboard() {
                   
                   <div className="space-y-4">
                     {content.about.mediaList?.map((item: any, idx: number) => {
-                      const isVideo = item.url?.match(/(\/video\/upload\/|\.(mp4|webm|ogg|mov|avi|mkv|qt)$)/i);
+                      const isVideo = item?.url?.match(/(\/video\/upload\/|\.(mp4|webm|ogg|mov|avi|mkv|qt)$)/i);
                       return (
                         <div key={idx} className="flex items-center gap-4 bg-zinc-950 p-4 rounded-xl border border-zinc-900">
                           <div 
                             className="w-24 h-24 bg-zinc-900 rounded-lg overflow-hidden border border-zinc-800 relative group cursor-pointer shrink-0"
-                            onClick={() => openUploader(['about', 'mediaList', idx, 'url'], item.publicId)}
+                            onClick={() => openUploader(['about', 'mediaList', idx, 'url'], item?.publicId)}
                           >
                             {isVideo 
-                              ? <video src={item.url} className="w-full h-full object-cover" autoPlay muted loop playsInline /> 
-                              : (item.url ? <img src={item.url} className="w-full h-full object-cover" alt="About Media" /> : <div className="w-full h-full flex items-center justify-center text-zinc-600 text-xs">Empty</div>)
+                              ? <video src={item?.url} className="w-full h-full object-cover" autoPlay muted loop playsInline /> 
+                              : (item?.url ? <img src={item?.url} className="w-full h-full object-cover" alt="About Media" /> : <div className="w-full h-full flex items-center justify-center text-zinc-600 text-xs">Empty</div>)
                             }
                             <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity z-30"><Upload size={16} className="text-white"/></div>
                           </div>
                           
                           <div className="flex-1">
                             <p className="text-xs text-zinc-500 mb-1">Media #{idx + 1}</p>
-                            <p className="text-sm text-zinc-300 truncate max-w-[200px] md:max-w-md">{item.url || "No media uploaded"}</p>
+                            <p className="text-sm text-zinc-300 truncate max-w-[200px] md:max-w-md">{item?.url || "No media uploaded"}</p>
                           </div>
 
                           <button 
@@ -660,18 +660,18 @@ export default function AdminDashboard() {
                         <div key={idx} className="flex flex-col md:flex-row items-center gap-4 bg-zinc-950 p-4 rounded-xl border border-zinc-900">
                           <div 
                             className="w-full md:w-32 h-20 bg-zinc-900 rounded-lg overflow-hidden border border-zinc-800 relative group cursor-pointer shrink-0"
-                            onClick={() => openUploader(['services', 'list', idx, 'mediaUrl'], item.publicId)}
+                            onClick={() => openUploader(['services', 'list', idx, 'mediaUrl'], item?.publicId)}
                           >
-                            {item.mediaUrl?.match(/(\/video\/upload\/|\.(mp4|webm|ogg|mov|avi|mkv|qt)$)/i) 
-                              ? <video src={item.mediaUrl} className="w-full h-full object-cover" autoPlay muted loop />
-                              : <img src={item.mediaUrl} className="w-full h-full object-cover" alt={item.title} />
+                            {item?.mediaUrl?.match(/(\/video\/upload\/|\.(mp4|webm|ogg|mov|avi|mkv|qt)$)/i) 
+                              ? <video src={item?.mediaUrl} className="w-full h-full object-cover" autoPlay muted loop />
+                              : <img src={item?.mediaUrl} className="w-full h-full object-cover" alt={item?.title} />
                             }
                             <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity z-30"><Upload size={20} className="text-white"/></div>
                           </div>
                           <input 
                             type="text" 
                             className="w-full p-4 bg-zinc-900 border border-zinc-800 rounded-xl outline-none focus:border-white transition-colors" 
-                            value={item.title} 
+                            value={item?.title || ""} 
                             placeholder="Service Title"
                             onChange={e => updateNestedField(['services', 'list', idx, 'title'], e.target.value)} 
                           />
@@ -726,17 +726,17 @@ export default function AdminDashboard() {
                           </button>
                           <div 
                             className="w-full md:w-48 h-32 bg-zinc-900 rounded-lg overflow-hidden border border-zinc-800 relative group cursor-pointer shrink-0"
-                            onClick={() => openUploader(['exhibitions', 'list', idx, 'mediaUrl'], item.publicId)}
+                            onClick={() => openUploader(['exhibitions', 'list', idx, 'mediaUrl'], item?.publicId)}
                           >
-                            {item.mediaUrl?.match(/(\/video\/upload\/|\.(mp4|webm|ogg|mov|avi|mkv|qt)$)/i) 
-                              ? <video src={item.mediaUrl} className="w-full h-full object-cover" autoPlay muted loop />
-                              : <img src={item.mediaUrl} className="w-full h-full object-cover" alt="Exhibition" />
+                            {item?.mediaUrl?.match(/(\/video\/upload\/|\.(mp4|webm|ogg|mov|avi|mkv|qt)$)/i) 
+                              ? <video src={item?.mediaUrl} className="w-full h-full object-cover" autoPlay muted loop />
+                              : <img src={item?.mediaUrl} className="w-full h-full object-cover" alt="Exhibition" />
                             }
                             <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity z-30"><Upload size={20} className="text-white"/></div>
                           </div>
                           <textarea 
                             className="w-full h-32 p-4 bg-zinc-900 border border-zinc-800 rounded-xl outline-none focus:border-white transition-colors" 
-                            value={item.text} 
+                            value={item?.text || ""} 
                             placeholder="LOCATION, DATE&#10;STUDIO NAME"
                             onChange={e => updateNestedField(['exhibitions', 'list', idx, 'text'], e.target.value)} 
                           />

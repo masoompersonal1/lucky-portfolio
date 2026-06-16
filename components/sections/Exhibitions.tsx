@@ -29,12 +29,12 @@ export default function Exhibitions({ data }: ExhibitionsProps) {
 
   const exhibitionsData = data?.list && data.list.length > 0
     ? data.list.map((item, i) => {
-        const textParts = (item.text || "").split('\n')
+        const textParts = (item?.text || "").split('\n')
         return {
           id: i,
           location: textParts[0] || "",
           studio: textParts[1] || "",
-          image: item.mediaUrl || defaultExhibitionsData[i%defaultExhibitionsData.length].image
+          image: item?.mediaUrl || defaultExhibitionsData[i%defaultExhibitionsData.length].image
         }
       })
     : defaultExhibitionsData.map((item, i) => {
