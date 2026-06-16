@@ -29,7 +29,7 @@ export default function Exhibitions({ data }: ExhibitionsProps) {
 
   const exhibitionsData = data?.list && data.list.length > 0
     ? data.list.map((item, i) => {
-        const textParts = item.text.split('\n')
+        const textParts = (item.text || "").split('\n')
         return {
           id: i,
           location: textParts[0] || "",
@@ -38,7 +38,7 @@ export default function Exhibitions({ data }: ExhibitionsProps) {
         }
       })
     : defaultExhibitionsData.map((item, i) => {
-        const textParts = item.text.split('\n')
+        const textParts = (item.text || "").split('\n')
         return {
           id: i,
           location: textParts[0] || "",
