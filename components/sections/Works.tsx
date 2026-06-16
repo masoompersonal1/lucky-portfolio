@@ -47,6 +47,14 @@ export default function Works({ data }: WorksProps) {
   const handlePrev = () => setCurrentGridIndex(prev => Math.max(0, prev - 1));
   const handleNext = () => setCurrentGridIndex(prev => Math.min(totalGrids - 1, prev + 1));
 
+  const renderMedia = (src: string, alt: string, sizes: string, className: string) => {
+    const isVideo = src.match(/(\/video\/upload\/|\.(mp4|webm|ogg|mov|avi|mkv|qt)$)/i);
+    if (isVideo) {
+      return <video src={src} autoPlay muted loop playsInline className={`w-full h-full object-cover ${className.replace('object-cover', '')}`} />;
+    }
+    return <Image src={src} alt={alt} fill sizes={sizes} className={className} />;
+  };
+
   return (
     <section id="works" className="w-full min-h-0 md:min-h-screen bg-[#c0c0c0] relative px-4 md:px-16 pt-16 md:pt-24 pb-8 md:pb-16 text-black flex flex-col">
       
@@ -92,43 +100,43 @@ export default function Works({ data }: WorksProps) {
         {/* Row 1 */}
         {/* 1. Wide Bridge */}
         <div className="col-span-2 relative aspect-[2/1] bg-black overflow-hidden group">
-          <Image src={gridImages[0]} alt="Works 1" fill sizes="(max-width: 768px) 100vw, 800px" className="object-cover group-hover:scale-105 transition-transform duration-700" />
+          {renderMedia(gridImages[0], "Works 1", "(max-width: 768px) 100vw, 800px", "object-cover group-hover:scale-105 transition-transform duration-700")}
         </div>
         {/* 2. Portrait */}
         <div className="col-span-1 row-span-2 relative aspect-[1/2] bg-black overflow-hidden group">
-          <Image src={gridImages[1]} alt="Works 2" fill sizes="(max-width: 768px) 50vw, 400px" className="object-cover group-hover:scale-105 transition-transform duration-700" />
+          {renderMedia(gridImages[1], "Works 2", "(max-width: 768px) 50vw, 400px", "object-cover group-hover:scale-105 transition-transform duration-700")}
         </div>
 
         {/* Row 2 */}
         {/* 3. Curves */}
         <div className="col-span-1 relative aspect-square bg-black overflow-hidden group">
-          <Image src={gridImages[2]} alt="Works 3" fill sizes="(max-width: 768px) 50vw, 400px" className="object-cover group-hover:scale-105 transition-transform duration-700" />
+          {renderMedia(gridImages[2], "Works 3", "(max-width: 768px) 50vw, 400px", "object-cover group-hover:scale-105 transition-transform duration-700")}
         </div>
         {/* 4. Faces */}
         <div className="col-span-1 relative aspect-square bg-black overflow-hidden group">
-          <Image src={gridImages[3]} alt="Works 4" fill sizes="(max-width: 768px) 50vw, 400px" className="object-cover opacity-60 group-hover:scale-105 transition-transform duration-700" />
+          {renderMedia(gridImages[3], "Works 4", "(max-width: 768px) 50vw, 400px", "object-cover opacity-60 group-hover:scale-105 transition-transform duration-700")}
         </div>
 
         {/* Row 3 */}
         {/* 5. Window */}
         <div className="col-span-1 row-span-2 relative aspect-[1/2] bg-black overflow-hidden group">
-          <Image src={gridImages[4]} alt="Works 5" fill sizes="(max-width: 768px) 50vw, 400px" className="object-cover group-hover:scale-105 transition-transform duration-700" />
+          {renderMedia(gridImages[4], "Works 5", "(max-width: 768px) 50vw, 400px", "object-cover group-hover:scale-105 transition-transform duration-700")}
         </div>
         {/* 6. Red Square + Tilted Image */}
         <div className="col-span-1 relative aspect-square bg-[#cc0000]">
           <div className="absolute w-[125%] h-[125%] -left-[15%] -top-[20%] -rotate-[12deg] z-20 border-[3px] md:border-4 border-white shadow-2xl bg-black overflow-hidden group">
-            <Image src={gridImages[5]} alt="Works 6" fill sizes="(max-width: 768px) 50vw, 400px" className="object-cover grayscale group-hover:scale-105 transition-transform duration-700" />
+            {renderMedia(gridImages[5], "Works 6", "(max-width: 768px) 50vw, 400px", "object-cover grayscale group-hover:scale-105 transition-transform duration-700")}
           </div>
         </div>
         {/* 7. Tower */}
         <div className="col-span-1 relative aspect-square bg-black overflow-hidden group">
-          <Image src={gridImages[6]} alt="Works 7" fill sizes="(max-width: 768px) 50vw, 400px" className="object-cover group-hover:scale-105 transition-transform duration-700" />
+          {renderMedia(gridImages[6], "Works 7", "(max-width: 768px) 50vw, 400px", "object-cover group-hover:scale-105 transition-transform duration-700")}
         </div>
 
         {/* Row 4 */}
         {/* 8. Wide Silhouette */}
         <div className="col-span-2 relative aspect-[2/1] bg-black overflow-hidden group">
-          <Image src={gridImages[7]} alt="Works 8" fill sizes="(max-width: 768px) 100vw, 800px" className="object-cover group-hover:scale-105 transition-transform duration-700" />
+          {renderMedia(gridImages[7], "Works 8", "(max-width: 768px) 100vw, 800px", "object-cover group-hover:scale-105 transition-transform duration-700")}
         </div>
       </div>
     </section>

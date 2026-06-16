@@ -104,12 +104,20 @@ export default function Exhibitions({ data }: ExhibitionsProps) {
             transition={{ duration: 0.5 }}
             className="absolute inset-0"
           >
-            <Image 
-              src={current.image} 
-              alt={current.location} 
-              fill 
-              className="object-cover group-hover:scale-105 transition-transform duration-1000 opacity-90"
-            />
+            {current.image.match(/(\/video\/upload\/|\.(mp4|webm|ogg|mov|avi|mkv|qt)$)/i) ? (
+              <video 
+                src={current.image} 
+                autoPlay muted loop playsInline 
+                className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-1000 opacity-90"
+              />
+            ) : (
+              <Image 
+                src={current.image} 
+                alt={current.location} 
+                fill 
+                className="object-cover group-hover:scale-105 transition-transform duration-1000 opacity-90"
+              />
+            )}
             
             {/* Overlays (Bottom Right) */}
             <div className="absolute bottom-4 right-4 md:bottom-10 md:right-10 flex flex-col items-end z-10 pointer-events-none">

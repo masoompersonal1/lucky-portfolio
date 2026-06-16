@@ -58,12 +58,20 @@ export default function Services({ data }: ServicesProps) {
               >
                 {/* Hover/Active Background Image */}
                 <div className={`absolute inset-0 z-0 transition-opacity duration-500 ${isActive ? 'opacity-100' : 'opacity-0 md:group-hover:opacity-100'}`}>
-                  <Image 
-                    src={service.image} 
-                    alt={service.title} 
-                    fill 
-                    className="object-cover"
-                  />
+                  {service.image.match(/(\/video\/upload\/|\.(mp4|webm|ogg|mov|avi|mkv|qt)$)/i) ? (
+                    <video 
+                      src={service.image} 
+                      autoPlay muted loop playsInline 
+                      className="object-cover w-full h-full"
+                    />
+                  ) : (
+                    <Image 
+                      src={service.image} 
+                      alt={service.title} 
+                      fill 
+                      className="object-cover"
+                    />
+                  )}
                   {/* Dark overlay to ensure text remains readable */}
                   <div className="absolute inset-0 bg-black/50" />
                 </div>
